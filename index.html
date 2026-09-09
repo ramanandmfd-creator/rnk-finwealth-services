@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RNK Finwealth Services | Mutual Fund Distributor</title>
-  <meta name="description" content="RNK Finwealth Services — Mutual Fund Distributor, ARN 291823. SIP, mutual funds, XIRR calculator, goal planning and investor support.">
+  <meta name="description" content="RNK Finwealth Services — Mutual Fund Distributor, ARN 291823. Explore mutual funds, daily NAV, SIP and XIRR calculators, goal planning and investor support.">
   <style>
     :root {
       --n: #062f52;
@@ -115,6 +115,12 @@
     .icon { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #edf6fa; color: var(--n); font-size: 24px; }
     .calc input { width: 100%; padding: 11px; border: 1px solid #cbdce6; border-radius: 9px; margin: 6px 0 11px; }
     .result { font-size: 23px; font-weight: 900; color: var(--n); }
+    .fund-explorer-card { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; align-items: center; gap: 17px; margin-top: 18px; padding: 21px 24px; border: 1px solid #b9d7df; border-radius: 18px; background: linear-gradient(120deg, #073b61, #087c82); color: #fff; box-shadow: 0 16px 40px #073e6526; }
+    .fund-explorer-card .icon { background: #ffffff1c; color: #f6c84a; }
+    .fund-explorer-card h3 { margin: 0; font-size: 22px; }
+    .fund-explorer-card p { margin: 3px 0 0; color: #d9eaee; }
+    .fund-explorer-card strong { color: #ffe08a; white-space: nowrap; }
+    .fund-explorer-card:hover { transform: translateY(-2px); box-shadow: 0 20px 48px #073e6535; }
 
     .xirr-section {
       background:
@@ -207,6 +213,8 @@
       .xirr-actions .btn { flex: 1 1 145px; }
       .summary-grid { grid-template-columns: 1fr; }
       .xirr-value { font-size: 34px; }
+      .fund-explorer-card { grid-template-columns: 50px minmax(0, 1fr); padding: 18px 16px; }
+      .fund-explorer-card strong { grid-column: 2; }
     }
   </style>
 </head>
@@ -221,6 +229,7 @@
     <div class="links">
       <a href="#home">Home</a>
       <a href="#services">Services</a>
+      <a href="funds.html">Explore Funds</a>
       <a href="#calculator">SIP Calculator</a>
       <a href="#xirr">XIRR Calculator</a>
       <a href="#about">About</a>
@@ -262,6 +271,11 @@
       <div class="card"><div class="icon">🎯</div><h3>Goal Planning</h3><p class="muted">Plan for education, retirement, home and other milestones.</p></div>
       <div class="card"><div class="icon">🤝</div><h3>Investor Support</h3><p class="muted">Get personal assistance for investment-related queries and servicing.</p></div>
     </div>
+    <a class="fund-explorer-card" href="funds.html">
+      <span class="icon" aria-hidden="true">⌕</span>
+      <span><h3>Explore Mutual Funds</h3><p>Search schemes, filter categories and view daily NAV with 1Y, 3Y and 5Y trailing returns.</p></span>
+      <strong>Open Fund Explorer →</strong>
+    </a>
   </section>
 
   <section class="section" id="calculator">
@@ -375,7 +389,7 @@
   <footer class="footer">
     <div class="footergrid">
       <div><div class="brand" style="color: white">RNK <b>FINWEALTH</b></div><p>Mutual Fund Distributor | ARN 291823<br>Plan Today, Prosper Tomorrow</p></div>
-      <div><strong>Quick Links</strong><p><a href="#home">Home</a><br><a href="#services">Services</a><br><a href="#calculator">SIP Calculator</a><br><a href="#xirr">XIRR Calculator</a><br><a href="#contact">Contact</a></p></div>
+      <div><strong>Quick Links</strong><p><a href="#home">Home</a><br><a href="#services">Services</a><br><a href="funds.html">Explore Funds</a><br><a href="#calculator">SIP Calculator</a><br><a href="#xirr">XIRR Calculator</a><br><a href="#contact">Contact</a></p></div>
       <div><strong>Contact</strong><p>📞 9817714501<br>✉ rnkfinwealthservices@gmail.com</p></div>
     </div>
     <small>Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Calculator results are illustrations only and do not guarantee returns or constitute investment advice.</small>
