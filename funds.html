@@ -67,7 +67,7 @@
     .search-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px 170px 180px; gap: 12px; }
     .search-box { position: relative; }
     .search-box span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #567183; font-size: 20px; }
-    .search-box input, .toolbar select {
+    .search-box input, .toolbar select, .filter-trigger {
       width: 100%;
       height: 49px;
       border: 1px solid #c9d9e2;
@@ -77,6 +77,9 @@
     }
     .search-box input { padding: 10px 14px 10px 45px; font-size: 16px; }
     .toolbar select { padding: 9px 12px; }
+    .filter-trigger { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 12px; cursor: pointer; text-align: left; }
+    .filter-trigger strong { overflow: hidden; color: #17384f; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-trigger b { color: #567183; font-size: 18px; }
     .field-label { display: block; margin: 0 0 5px; color: #61798a; font-size: 13px; font-weight: 800; }
     .search-field .field-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
@@ -98,20 +101,12 @@
     .collection-card:nth-child(3n) .collection-icon { color: var(--navy); background: linear-gradient(145deg, #f8d36b, #e8aa17); }
     .collection-card strong { display: block; font-size: 15px; line-height: 1.3; }
 
-    .amc-panel { padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 8px 25px #063b630d; }
-    .amc-panel-top { display: flex; align-items: center; justify-content: space-between; gap: 13px; margin-bottom: 15px; }
-    .amc-search { position: relative; width: min(390px, 100%); }
-    .amc-search span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #567183; }
-    .amc-search input { width: 100%; height: 46px; padding: 9px 13px 9px 41px; border: 1px solid #c9d9e2; border-radius: 11px; color: var(--ink); background: #fff; }
-    .amc-summary { color: var(--muted); font-size: 14px; font-weight: 800; white-space: nowrap; }
-    .amc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-    .amc-card { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 11px; min-height: 76px; padding: 11px; border: 1px solid var(--line); border-radius: 13px; background: #fbfdfe; color: var(--ink); text-align: left; cursor: pointer; }
-    .amc-card:hover { border-color: #9dbfce; background: #f5fbfc; }
-    .amc-card.active { border-color: var(--green); background: #effaf7; box-shadow: 0 0 0 2px #079b771c; }
+    .amc-panel { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 19px 21px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 8px 25px #063b630d; }
+    .amc-panel-copy { min-width: 0; }
+    .amc-panel-copy strong { display: block; color: #17384f; font-size: 17px; }
+    .amc-summary { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+    .choose-amc { flex: 0 0 auto; min-height: 48px; padding: 10px 18px; border: 0; border-radius: 11px; background: var(--green); color: #fff; font-weight: 900; cursor: pointer; }
     .amc-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; color: #fff; background: hsl(var(--amc-hue) 62% 35%); font-size: 13px; font-weight: 900; }
-    .amc-card strong { display: block; overflow: hidden; color: #17384f; font-size: 13px; line-height: 1.3; }
-    .amc-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
-    .amc-grid .empty-state { grid-column: 1 / -1; }
 
     .toolbar { display: flex; align-items: end; gap: 13px; }
     .toolbar-field { width: 165px; }
@@ -120,18 +115,42 @@
 
     .results-meta { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 17px 0 11px; color: var(--muted); font-size: 14px; }
     .results-meta strong { color: var(--ink); }
-    .fund-list { display: grid; gap: 10px; }
-    .fund-row { width: 100%; display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; align-items: center; gap: 15px; padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: #fff; color: var(--ink); text-align: left; cursor: pointer; box-shadow: 0 6px 20px #073e650a; }
-    .fund-row:hover { border-color: #9dbfce; box-shadow: 0 10px 26px #073e6514; }
+    .return-period { display: inline-flex; align-items: center; gap: 7px; color: #365568; font-weight: 900; }
+    .return-period select { min-height: 39px; padding: 7px 30px 7px 10px; border: 1px solid #c9d9e2; border-radius: 999px; background: #fff; color: #17384f; font-weight: 900; cursor: pointer; }
+    .fund-list { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 8px 28px #063b630d; }
+    .fund-row { width: 100%; display: grid; grid-template-columns: 48px minmax(0, 1fr) 104px; align-items: center; gap: 14px; min-height: 91px; padding: 15px 18px; border: 0; border-bottom: 1px solid #e4ebef; background: #fff; color: var(--ink); text-align: left; cursor: pointer; }
+    .fund-row:last-child { border-bottom: 0; }
+    .fund-row:hover { background: #f8fcfb; }
     .fund-mark { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; color: #fff; background: hsl(var(--mark-hue) 65% 35%); font-weight: 900; letter-spacing: .5px; }
+    .fund-brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 9px; color: #fff; background: hsl(var(--amc-hue) 62% 35%); font-size: 12px; font-weight: 900; }
     .fund-copy { min-width: 0; }
-    .fund-house { display: block; margin-bottom: 3px; color: #687d8d; font-size: 12px; font-weight: 800; }
-    .fund-name { display: block; margin: 0; color: #17384f; font-size: 16px; font-weight: 800; line-height: 1.35; }
-    .fund-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 6px; }
-    .tag { padding: 3px 8px; border-radius: 999px; background: #eef5f8; color: #5d7484; font-size: 12px; font-weight: 700; }
-    .tag.plan { background: #edf8f4; color: #08795f; }
-    .fund-action { display: flex; align-items: center; gap: 9px; color: var(--green); font-size: 14px; font-weight: 900; white-space: nowrap; }
-    .fund-action b { font-size: 24px; font-weight: 400; }
+    .fund-name { display: block; margin: 0; color: #263b4b; font-size: 16px; font-weight: 700; line-height: 1.35; }
+    .fund-meta { display: block; overflow: hidden; margin-top: 4px; color: #788994; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+    .fund-return { min-width: 88px; text-align: right; }
+    .fund-return-value { display: block; color: var(--green); font-size: 17px; font-weight: 900; }
+    .fund-return-value.negative { color: var(--danger); }
+    .fund-return-value.loading, .fund-return-value.unavailable { color: #8b999f; font-size: 12px; }
+    .fund-return small { display: block; margin-top: 3px; color: #81909a; font-size: 12px; }
+
+    .amc-filter-modal { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 24px; }
+    .amc-filter-modal[hidden] { display: none; }
+    .amc-filter-backdrop { position: absolute; inset: 0; border: 0; background: #001c2ebd; cursor: pointer; }
+    .amc-filter-sheet { position: relative; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; width: min(620px, 100%); max-height: min(760px, calc(100vh - 48px)); overflow: hidden; border-radius: 20px; background: #fff; box-shadow: 0 30px 90px #00131fe0; }
+    .amc-filter-head { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 17px 20px; border-bottom: 1px solid #e2e8eb; }
+    .amc-filter-head h2 { margin: 0; color: #263b4b; font-size: 23px; }
+    .filter-close { width: 40px; height: 40px; border: 0; background: transparent; color: #263b4b; font-size: 30px; line-height: 1; cursor: pointer; }
+    .filter-clear { border: 0; background: transparent; color: var(--green); font-weight: 900; cursor: pointer; }
+    .amc-choice-search { position: relative; margin: 17px 20px 10px; }
+    .amc-choice-search span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #687d8d; font-size: 20px; }
+    .amc-choice-search input { width: 100%; height: 50px; padding: 10px 14px 10px 44px; border: 1px solid #d4dde2; border-radius: 12px; background: #fff; color: #263b4b; font-size: 16px; }
+    .amc-choice-list { overflow-y: auto; padding: 0 20px 8px; }
+    .amc-choice { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 13px; min-height: 66px; border-bottom: 1px solid #e8edef; cursor: pointer; }
+    .amc-choice input { width: 21px; height: 21px; accent-color: var(--green); }
+    .amc-choice strong { color: #34464f; font-size: 15px; font-weight: 600; }
+    .amc-choice small { color: #86949b; font-size: 12px; white-space: nowrap; }
+    .amc-filter-empty { padding: 35px 10px; color: var(--muted); text-align: center; }
+    .amc-filter-footer { padding: 16px 20px; border-top: 1px solid #e2e8eb; background: #fff; }
+    .apply-amc-filter { width: 100%; min-height: 52px; border: 0; border-radius: 12px; background: var(--green); color: #fff; font-size: 17px; font-weight: 900; cursor: pointer; }
 
     .empty-state, .error-state { padding: 38px 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-align: center; }
     .empty-state h3, .error-state h3 { margin: 0 0 6px; color: var(--navy); }
@@ -183,7 +202,6 @@
       .collections-grid { grid-template-columns: repeat(3, 1fr); }
       .search-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .search-field { grid-column: 1 / -1; }
-      .amc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (max-width: 720px) {
@@ -203,13 +221,15 @@
       .growth-toggle { align-self: end; }
       .collections-grid { grid-template-columns: repeat(2, 1fr); }
       .collection-card { min-height: 112px; }
-      .amc-panel { padding: 13px; }
-      .amc-panel-top { align-items: stretch; flex-direction: column; }
-      .amc-search { width: 100%; }
-      .amc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .fund-row { grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 14px 12px; }
+      .amc-panel { align-items: stretch; flex-direction: column; padding: 17px; }
+      .choose-amc { width: 100%; }
+      .fund-row { grid-template-columns: 44px minmax(0, 1fr) 78px; gap: 11px; min-height: 88px; padding: 14px 12px; }
+      .fund-brand-mark { width: 40px; height: 40px; }
+      .fund-name { font-size: 15px; }
+      .fund-meta { font-size: 12px; }
+      .fund-return { min-width: 70px; }
+      .fund-return-value { font-size: 16px; }
       .fund-mark { width: 47px; height: 47px; border-radius: 12px; }
-      .fund-action { grid-column: 2; justify-content: space-between; border-top: 1px solid #e5edf1; padding-top: 8px; margin-top: 2px; }
       .footer-inner { display: block; }
       .footer-inner p { margin-bottom: 0; }
       .modal { align-items: end; padding: 0; }
@@ -217,17 +237,24 @@
       .sheet-top { padding: 22px 56px 19px 18px; }
       .detail-ident h2 { font-size: 20px; }
       .sheet-body { padding: 18px; }
+      .amc-filter-modal { padding: 0; }
+      .amc-filter-sheet { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+      .amc-filter-head { padding: 13px 17px; }
+      .amc-choice-search { margin: 16px 17px 9px; }
+      .amc-choice-list { padding: 0 17px 8px; }
+      .amc-filter-footer { padding: 13px 17px calc(13px + env(safe-area-inset-bottom)); }
     }
 
     @media (max-width: 430px) {
       .toolbar { grid-template-columns: 1fr; }
       .collections-grid { gap: 9px; }
       .collection-card { min-height: 108px; padding: 14px 11px; }
-      .amc-grid { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
       .metric { padding: 12px 10px; }
       .metric strong { font-size: 19px; }
       .detail-actions a, .detail-actions button { flex: 1 1 100%; }
+      .results-meta { align-items: flex-end; }
+      .return-period { align-items: flex-end; flex-direction: column; gap: 4px; }
     }
   </style>
 </head>
@@ -256,7 +283,7 @@
         </div>
         <div>
           <label class="field-label" for="amcFilter">Fund House (AMC)</label>
-          <div class="toolbar"><select id="amcFilter"><option value="All">All AMCs</option></select></div>
+          <button class="filter-trigger" id="amcFilter" type="button" aria-haspopup="dialog"><strong id="amcFilterText">All Fund Houses</strong><b aria-hidden="true">⌄</b></button>
         </div>
         <div>
           <label class="field-label" for="planFilter">Plan</label>
@@ -298,14 +325,14 @@
 
     <section class="section" id="amcDirectory" aria-labelledby="amcTitle">
       <div class="section-head">
-        <div><h2 id="amcTitle">Browse by Fund House (AMC)</h2><p>Select any AMC to see all of its available schemes and open detailed NAV and return information.</p></div>
+        <div><h2 id="amcTitle">Fund House (AMC)</h2><p>Choose one or more fund houses to view all available funds.</p></div>
       </div>
       <div class="amc-panel">
-        <div class="amc-panel-top">
-          <label class="amc-search" for="amcSearch"><span aria-hidden="true">⌕</span><input id="amcSearch" type="search" placeholder="Search AMC or fund house" autocomplete="off"></label>
+        <div class="amc-panel-copy">
+          <strong id="selectedAmcCopy">All Fund Houses</strong>
           <span class="amc-summary" id="amcSummary">Loading fund houses…</span>
         </div>
-        <div class="amc-grid" id="amcGrid" aria-live="polite"></div>
+        <button class="choose-amc" id="openAmcDirectory" type="button" aria-haspopup="dialog">Choose Fund House</button>
       </div>
     </section>
 
@@ -317,7 +344,18 @@
         </div>
       </div>
 
-      <div class="results-meta"><span id="resultCount"><strong>Loading</strong> schemes…</span><span>Daily NAV data</span></div>
+      <div class="results-meta">
+        <span id="resultCount"><strong>Loading</strong> funds…</span>
+        <label class="return-period" for="returnPeriod">Returns
+          <select id="returnPeriod" aria-label="Select return period">
+            <option value="1">1Y</option>
+            <option value="2">2Y</option>
+            <option value="3" selected>3Y</option>
+            <option value="4">4Y</option>
+            <option value="5">5Y</option>
+          </select>
+        </label>
+      </div>
       <div class="fund-list" id="fundList" aria-live="polite">
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
       </div>
@@ -328,6 +366,20 @@
       </div>
     </section>
   </main>
+
+  <div class="amc-filter-modal" id="amcFilterModal" role="dialog" aria-modal="true" aria-labelledby="amcFilterTitle" hidden>
+    <button class="amc-filter-backdrop" type="button" data-close-amc-filter aria-label="Close fund house filter"></button>
+    <section class="amc-filter-sheet">
+      <header class="amc-filter-head">
+        <button class="filter-close" type="button" data-close-amc-filter aria-label="Close fund house filter">×</button>
+        <h2 id="amcFilterTitle">Fund House</h2>
+        <button class="filter-clear" id="clearAmcFilter" type="button">Clear all</button>
+      </header>
+      <label class="amc-choice-search" for="amcSearch"><span aria-hidden="true">⌕</span><input id="amcSearch" type="search" placeholder="Search fund house" autocomplete="off"></label>
+      <div class="amc-choice-list" id="amcChoiceList" aria-live="polite"></div>
+      <footer class="amc-filter-footer"><button class="apply-amc-filter" id="applyAmcFilter" type="button">View all funds</button></footer>
+    </section>
+  </div>
 
   <div class="modal" id="fundModal" role="dialog" aria-modal="true" aria-labelledby="detailName" hidden>
     <button class="modal-backdrop" type="button" data-close-modal aria-label="Close fund details"></button>
@@ -347,7 +399,9 @@
           <div class="metric-grid">
             <div class="metric nav"><span>Latest NAV</span><strong id="latestNav">—</strong></div>
             <div class="metric"><span>1Y return</span><strong id="return1y">—</strong></div>
+            <div class="metric"><span>2Y CAGR</span><strong id="return2y">—</strong></div>
             <div class="metric"><span>3Y CAGR</span><strong id="return3y">—</strong></div>
+            <div class="metric"><span>4Y CAGR</span><strong id="return4y">—</strong></div>
             <div class="metric"><span>5Y CAGR</span><strong id="return5y">—</strong></div>
           </div>
           <p class="detail-disclaimer">Returns are calculated from the available NAV history and are point-to-point illustrations. Past performance does not guarantee future returns.</p>
@@ -369,12 +423,20 @@
       schemes: [],
       filtered: [],
       category: 'All',
-      amc: 'All',
+      selectedAmcs: new Set(),
+      draftAmcs: new Set(),
       amcQuery: '',
       visible: 20,
+      returnPeriod: 3,
+      focusedBeforeAmc: null,
       focusedBeforeModal: null
     };
     const detailCache = new Map();
+    const returnCache = new Map();
+    const returnLoadQueue = [];
+    const queuedReturnCodes = new Set();
+    let activeReturnLoads = 0;
+    let returnObserver = null;
     const DAY = 24 * 60 * 60 * 1000;
     const YEAR = 365 * DAY;
     const AMC_DEFINITIONS = [
@@ -520,88 +582,88 @@
       return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
     }
 
-    function populateAmcFilter() {
-      const select = document.getElementById('amcFilter');
-      select.textContent = '';
-      const allOption = document.createElement('option');
-      allOption.value = 'All';
-      allOption.textContent = `All AMCs (${state.schemes.length.toLocaleString('en-IN')} schemes)`;
-      select.appendChild(allOption);
-      getAmcGroups().forEach(([amc, total]) => {
-        const option = document.createElement('option');
-        option.value = amc;
-        option.textContent = `${amc} (${total.toLocaleString('en-IN')})`;
-        select.appendChild(option);
-      });
-      select.value = state.amc;
+    function amcSelectionLabel(selection) {
+      if (!selection.size) return 'All Fund Houses';
+      if (selection.size === 1) return [...selection][0];
+      return `${selection.size} Fund Houses`;
     }
 
-    function renderAmcs() {
-      const grid = document.getElementById('amcGrid');
-      const summary = document.getElementById('amcSummary');
-      const query = state.amcQuery.trim().toLowerCase();
-      const allGroups = getAmcGroups();
-      const groups = allGroups.filter(([amc]) => !query || amc.toLowerCase().includes(query));
-      grid.textContent = '';
-      summary.textContent = `${allGroups.length.toLocaleString('en-IN')} fund houses • ${state.schemes.length.toLocaleString('en-IN')} schemes`;
+    function countForAmcs(selection) {
+      if (!selection.size) return state.schemes.length;
+      return state.schemes.reduce((total, scheme) => total + (selection.has(scheme.amc) ? 1 : 0), 0);
+    }
 
-      if (!query) {
-        const allCard = document.createElement('button');
-        allCard.type = 'button';
-        allCard.className = `amc-card${state.amc === 'All' ? ' active' : ''}`;
-        allCard.setAttribute('aria-pressed', String(state.amc === 'All'));
-        const mark = document.createElement('span');
-        mark.className = 'amc-mark';
-        mark.style.setProperty('--amc-hue', '181');
-        mark.textContent = 'ALL';
-        const copy = document.createElement('span');
-        const name = document.createElement('strong');
-        name.textContent = 'All Fund Houses';
-        const count = document.createElement('small');
-        count.textContent = `${state.schemes.length.toLocaleString('en-IN')} schemes`;
-        copy.append(name, count);
-        allCard.append(mark, copy);
-        allCard.addEventListener('click', () => setAmc('All'));
-        grid.appendChild(allCard);
-      }
+    function updateAmcControls() {
+      const label = amcSelectionLabel(state.selectedAmcs);
+      const allGroups = getAmcGroups();
+      document.getElementById('amcFilterText').textContent = state.selectedAmcs.size ? `Fund House (${state.selectedAmcs.size})` : 'All Fund Houses';
+      document.getElementById('selectedAmcCopy').textContent = label;
+      document.getElementById('amcSummary').textContent = state.selectedAmcs.size
+        ? `${countForAmcs(state.selectedAmcs).toLocaleString('en-IN')} available schemes selected`
+        : `${allGroups.length.toLocaleString('en-IN')} fund houses • ${state.schemes.length.toLocaleString('en-IN')} available schemes`;
+    }
+
+    function updateAmcApplyText() {
+      const total = countForAmcs(state.draftAmcs);
+      document.getElementById('applyAmcFilter').textContent = `View ${total.toLocaleString('en-IN')} ${total === 1 ? 'fund' : 'funds'}`;
+    }
+
+    function renderAmcChoices() {
+      const list = document.getElementById('amcChoiceList');
+      const query = state.amcQuery.trim().toLowerCase();
+      const groups = getAmcGroups().filter(([amc]) => !query || amc.toLowerCase().includes(query));
+      list.textContent = '';
 
       groups.forEach(([amc, total]) => {
-        const card = document.createElement('button');
-        card.type = 'button';
-        card.className = `amc-card${state.amc === amc ? ' active' : ''}`;
-        card.setAttribute('aria-pressed', String(state.amc === amc));
-        card.setAttribute('aria-label', `View ${total} schemes from ${amc}`);
-        const mark = document.createElement('span');
-        mark.className = 'amc-mark';
-        mark.style.setProperty('--amc-hue', String(hueFor(amc)));
-        mark.textContent = amcMark(amc);
-        const copy = document.createElement('span');
+        const choice = document.createElement('label');
+        choice.className = 'amc-choice';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = amc;
+        checkbox.checked = state.draftAmcs.has(amc);
         const name = document.createElement('strong');
         name.textContent = amc;
         const count = document.createElement('small');
         count.textContent = `${total.toLocaleString('en-IN')} ${total === 1 ? 'scheme' : 'schemes'}`;
-        copy.append(name, count);
-        card.append(mark, copy);
-        card.addEventListener('click', () => setAmc(amc));
-        grid.appendChild(card);
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) state.draftAmcs.add(amc);
+          else state.draftAmcs.delete(amc);
+          updateAmcApplyText();
+        });
+        choice.append(checkbox, name, count);
+        list.appendChild(choice);
       });
 
       if (!groups.length) {
         const empty = document.createElement('div');
-        empty.className = 'empty-state';
-        const title = document.createElement('h3');
-        title.textContent = 'No matching AMC found';
-        const copy = document.createElement('p');
-        copy.textContent = 'Try another fund house name.';
-        empty.append(title, copy);
-        grid.appendChild(empty);
+        empty.className = 'amc-filter-empty';
+        empty.textContent = 'No matching fund house found.';
+        list.appendChild(empty);
       }
+      updateAmcApplyText();
     }
 
-    function setAmc(amc) {
-      state.amc = amc;
-      document.getElementById('amcFilter').value = amc;
-      renderAmcs();
+    function openAmcFilter() {
+      state.focusedBeforeAmc = document.activeElement;
+      state.draftAmcs = new Set(state.selectedAmcs);
+      state.amcQuery = '';
+      document.getElementById('amcSearch').value = '';
+      renderAmcChoices();
+      document.getElementById('amcFilterModal').hidden = false;
+      document.body.classList.add('modal-open');
+      document.getElementById('amcSearch').focus();
+    }
+
+    function closeAmcFilter() {
+      document.getElementById('amcFilterModal').hidden = true;
+      document.body.classList.remove('modal-open');
+      if (state.focusedBeforeAmc && typeof state.focusedBeforeAmc.focus === 'function') state.focusedBeforeAmc.focus();
+    }
+
+    function applyAmcSelection() {
+      state.selectedAmcs = new Set(state.draftAmcs);
+      closeAmcFilter();
+      updateAmcControls();
       applyFilters(true);
       document.getElementById('fundDirectory').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -622,7 +684,7 @@
       state.filtered = state.schemes.filter((scheme) => {
         const actualCategory = categoryFor(scheme.name);
         if (query && !`${scheme.name} ${scheme.amc}`.toLowerCase().includes(query)) return false;
-        if (state.amc !== 'All' && scheme.amc !== state.amc) return false;
+        if (state.selectedAmcs.size && !state.selectedAmcs.has(scheme.amc)) return false;
         if (plan !== 'all' && planFor(scheme.name).toLowerCase() !== plan) return false;
         if (growthOnly && !isGrowth(scheme.name)) return false;
         return categoryMatches(actualCategory, state.category);
@@ -644,21 +706,18 @@
       renderFunds();
     }
 
-    function makeTag(text, plan = false) {
-      const tag = document.createElement('span');
-      tag.className = plan ? 'tag plan' : 'tag';
-      tag.textContent = text;
-      return tag;
-    }
-
     function renderFunds() {
       const list = document.getElementById('fundList');
       const count = document.getElementById('resultCount');
       const loadMore = document.getElementById('loadMore');
       const visibleSchemes = state.filtered.slice(0, state.visible);
       list.textContent = '';
-      count.innerHTML = `<strong>${state.filtered.length.toLocaleString('en-IN')}</strong> matching schemes`;
-      document.getElementById('directoryTitle').textContent = state.amc === 'All' ? 'All mutual fund schemes' : `${state.amc} schemes`;
+      count.innerHTML = `<strong>${state.filtered.length.toLocaleString('en-IN')}</strong> ${state.filtered.length === 1 ? 'fund' : 'funds'}`;
+      document.getElementById('directoryTitle').textContent = state.selectedAmcs.size === 1
+        ? [...state.selectedAmcs][0]
+        : state.selectedAmcs.size > 1
+          ? `Funds from ${state.selectedAmcs.size} Fund Houses`
+          : 'All Mutual Funds';
 
       if (!visibleSchemes.length) {
         const empty = document.createElement('div');
@@ -684,37 +743,37 @@
         row.setAttribute('aria-label', `View NAV and returns for ${scheme.name}`);
 
         const mark = document.createElement('span');
-        mark.className = 'fund-mark';
-        mark.style.setProperty('--mark-hue', String(hueFor(scheme.name)));
-        mark.textContent = markFor(scheme.name);
+        mark.className = 'fund-brand-mark';
+        mark.style.setProperty('--amc-hue', String(hueFor(scheme.amc)));
+        mark.textContent = amcMark(scheme.amc);
 
         const copy = document.createElement('span');
         copy.className = 'fund-copy';
-        const fundHouse = document.createElement('span');
-        fundHouse.className = 'fund-house';
-        fundHouse.textContent = scheme.amc;
         const name = document.createElement('span');
         name.className = 'fund-name';
         name.textContent = scheme.name;
-        const tags = document.createElement('span');
-        tags.className = 'fund-tags';
-        tags.append(makeTag(category), makeTag(plan, true));
-        copy.append(fundHouse, name, tags);
+        const meta = document.createElement('span');
+        meta.className = 'fund-meta';
+        meta.textContent = `${scheme.amc.replace(/\s+Mutual Fund(?:\s+\(IDF\))?$/i, '')} • ${category} • ${plan}`;
+        copy.append(name, meta);
 
-        const action = document.createElement('span');
-        action.className = 'fund-action';
-        const actionText = document.createElement('span');
-        actionText.textContent = 'View NAV & returns';
-        const arrow = document.createElement('b');
-        arrow.textContent = '›';
-        action.append(actionText, arrow);
+        const returnBox = document.createElement('span');
+        returnBox.className = 'fund-return';
+        const returnValue = document.createElement('span');
+        returnValue.className = 'fund-return-value loading';
+        returnValue.dataset.returnCode = scheme.code;
+        returnValue.textContent = 'Loading…';
+        const returnLabel = document.createElement('small');
+        returnLabel.textContent = `${state.returnPeriod}Y`;
+        returnBox.append(returnValue, returnLabel);
 
-        row.append(mark, copy, action);
+        row.append(mark, copy, returnBox);
         row.addEventListener('click', () => openFund(scheme));
         fragment.appendChild(row);
       });
       list.appendChild(fragment);
       loadMore.hidden = state.visible >= state.filtered.length;
+      hydrateVisibleReturns(visibleSchemes);
     }
 
     function showDirectoryError(message) {
@@ -761,8 +820,7 @@
         }
         state.schemes = [...schemesByCode.values()];
         if (!state.schemes.length) throw new Error('No scheme records were received.');
-        populateAmcFilter();
-        renderAmcs();
+        updateAmcControls();
         document.getElementById('dataStatus').textContent = `${state.schemes.length.toLocaleString('en-IN')} schemes across ${getAmcGroups().length.toLocaleString('en-IN')} fund houses • NAV details update daily`;
         applyFilters(true);
       } catch (error) {
@@ -799,6 +857,103 @@
       const elapsedYears = (latest.date - base.date) / YEAR;
       if (elapsedYears <= 0) return null;
       return (Math.pow(latest.nav / base.nav, 1 / elapsedYears) - 1) * 100;
+    }
+
+    function recordsFromPayload(payload) {
+      return collectionFromPayload({ data: payload && payload.data }).map((item) => ({
+        date: parseNavDate(item.date),
+        nav: Number(item.nav)
+      })).filter((item) => item.date && Number.isFinite(item.nav) && item.nav > 0).sort((a, b) => a.date - b.date);
+    }
+
+    function updateReturnCells(code) {
+      const result = returnCache.get(code);
+      document.querySelectorAll('[data-return-code]').forEach((element) => {
+        if (element.dataset.returnCode !== code) return;
+        element.className = 'fund-return-value';
+        if (!result || result.status === 'loading') {
+          element.classList.add('loading');
+          element.textContent = 'Loading…';
+          return;
+        }
+        const value = result.status === 'ready' ? result.values[state.returnPeriod] : null;
+        if (!Number.isFinite(value)) {
+          element.classList.add('unavailable');
+          element.textContent = 'N/A';
+          return;
+        }
+        element.classList.toggle('negative', value < 0);
+        element.textContent = `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
+      });
+    }
+
+    async function loadSchemeReturns(scheme) {
+      if (returnCache.has(scheme.code) && returnCache.get(scheme.code).status !== 'loading') {
+        updateReturnCells(scheme.code);
+        return;
+      }
+      returnCache.set(scheme.code, { status: 'loading' });
+      updateReturnCells(scheme.code);
+      try {
+        const payload = await fetchDetails(scheme.code);
+        const records = recordsFromPayload(payload);
+        if (!records.length) throw new Error('NAV history unavailable');
+        const values = {};
+        [1, 2, 3, 4, 5].forEach((years) => { values[years] = trailingReturn(records, years); });
+        returnCache.set(scheme.code, { status: 'ready', values });
+      } catch (error) {
+        returnCache.set(scheme.code, { status: 'error' });
+      }
+      updateReturnCells(scheme.code);
+    }
+
+    function drainReturnQueue() {
+      while (activeReturnLoads < 4 && returnLoadQueue.length) {
+        const scheme = returnLoadQueue.shift();
+        activeReturnLoads += 1;
+        loadSchemeReturns(scheme).finally(() => {
+          activeReturnLoads -= 1;
+          queuedReturnCodes.delete(scheme.code);
+          drainReturnQueue();
+        });
+      }
+    }
+
+    function queueSchemeReturn(scheme) {
+      if (returnCache.has(scheme.code)) {
+        updateReturnCells(scheme.code);
+        return;
+      }
+      if (queuedReturnCodes.has(scheme.code)) return;
+      queuedReturnCodes.add(scheme.code);
+      returnLoadQueue.push(scheme);
+      drainReturnQueue();
+    }
+
+    function hydrateVisibleReturns(schemes) {
+      if (returnObserver) returnObserver.disconnect();
+      const schemesByCode = new Map(schemes.map((scheme) => [scheme.code, scheme]));
+      const cells = [...document.querySelectorAll('[data-return-code]')];
+      cells.forEach((cell) => {
+        if (returnCache.has(cell.dataset.returnCode)) updateReturnCells(cell.dataset.returnCode);
+      });
+
+      if (!('IntersectionObserver' in window)) {
+        schemes.forEach(queueSchemeReturn);
+        return;
+      }
+
+      returnObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          returnObserver.unobserve(entry.target);
+          const scheme = schemesByCode.get(entry.target.dataset.returnCode);
+          if (scheme) queueSchemeReturn(scheme);
+        });
+      }, { rootMargin: '300px 0px' });
+      cells.forEach((cell) => {
+        if (!returnCache.has(cell.dataset.returnCode)) returnObserver.observe(cell);
+      });
     }
 
     function showReturn(elementId, value) {
@@ -840,10 +995,7 @@
 
       try {
         const payload = await fetchDetails(scheme.code);
-        const records = collectionFromPayload({ data: payload.data }).map((item) => ({
-          date: parseNavDate(item.date),
-          nav: Number(item.nav)
-        })).filter((item) => item.date && Number.isFinite(item.nav) && item.nav > 0).sort((a, b) => a.date - b.date);
+        const records = recordsFromPayload(payload);
 
         if (!records.length) throw new Error('NAV history is not available for this scheme.');
         const meta = payload.meta || {};
@@ -854,7 +1006,9 @@
         document.getElementById('detailDate').textContent = `Latest available NAV dated ${formatDate(latest.date)}`;
         document.getElementById('latestNav').textContent = formatNav(latest.nav);
         showReturn('return1y', trailingReturn(records, 1));
+        showReturn('return2y', trailingReturn(records, 2));
         showReturn('return3y', trailingReturn(records, 3));
+        showReturn('return4y', trailingReturn(records, 4));
         showReturn('return5y', trailingReturn(records, 5));
         document.getElementById('schemeWhatsApp').href = `https://wa.me/919817714501?text=${encodeURIComponent(`Hello RNK Finwealth Services, I want details about ${name}.`)}`;
         document.getElementById('detailLoading').hidden = true;
@@ -879,12 +1033,23 @@
       searchTimer = setTimeout(() => applyFilters(true), 120);
     });
     document.getElementById('planFilter').addEventListener('change', () => applyFilters(true));
-    document.getElementById('amcFilter').addEventListener('change', (event) => setAmc(event.target.value));
     document.getElementById('sortFilter').addEventListener('change', () => applyFilters(true));
     document.getElementById('growthOnly').addEventListener('change', () => applyFilters(true));
+    document.getElementById('amcFilter').addEventListener('click', openAmcFilter);
+    document.getElementById('openAmcDirectory').addEventListener('click', openAmcFilter);
     document.getElementById('amcSearch').addEventListener('input', (event) => {
       state.amcQuery = event.target.value;
-      renderAmcs();
+      renderAmcChoices();
+    });
+    document.getElementById('clearAmcFilter').addEventListener('click', () => {
+      state.draftAmcs.clear();
+      renderAmcChoices();
+    });
+    document.getElementById('applyAmcFilter').addEventListener('click', applyAmcSelection);
+    document.querySelectorAll('[data-close-amc-filter]').forEach((button) => button.addEventListener('click', closeAmcFilter));
+    document.getElementById('returnPeriod').addEventListener('change', (event) => {
+      state.returnPeriod = Number(event.target.value);
+      renderFunds();
     });
     document.querySelectorAll('[data-category]').forEach((button) => button.addEventListener('click', () => setCategory(button.dataset.category)));
     document.querySelectorAll('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModal));
@@ -893,7 +1058,9 @@
       renderFunds();
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !document.getElementById('fundModal').hidden) closeModal();
+      if (event.key !== 'Escape') return;
+      if (!document.getElementById('amcFilterModal').hidden) closeAmcFilter();
+      else if (!document.getElementById('fundModal').hidden) closeModal();
     });
 
     loadDirectory();
