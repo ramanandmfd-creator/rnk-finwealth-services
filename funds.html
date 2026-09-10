@@ -269,7 +269,7 @@
     <div class="hero-inner">
       <span class="eyebrow">MUTUAL FUND DISTRIBUTOR • ARN 291823</span>
       <h1>Explore Mutual Funds</h1>
-      <p>Search Indian mutual fund schemes, browse useful categories and view the latest available NAV with 1Y, 2Y, 3Y, 4Y and 5Y trailing returns.</p>
+      <p>Search Indian mutual fund schemes, browse useful categories and view the latest available NAV with 1M, 6M and 1Y to 5Y trailing returns.</p>
       <div class="data-status"><span class="status-dot"></span><span id="dataStatus">Loading the daily fund directory…</span></div>
     </div>
   </section>
@@ -348,11 +348,13 @@
         <span id="resultCount"><strong>Loading</strong> funds…</span>
         <label class="return-period" for="returnPeriod">Returns
           <select id="returnPeriod" aria-label="Select return period">
-            <option value="1">1Y</option>
-            <option value="2">2Y</option>
-            <option value="3" selected>3Y</option>
-            <option value="4">4Y</option>
-            <option value="5">5Y</option>
+            <option value="1m">1M</option>
+            <option value="6m">6M</option>
+            <option value="1y">1Y</option>
+            <option value="2y">2Y</option>
+            <option value="3y" selected>3Y</option>
+            <option value="4y">4Y</option>
+            <option value="5y">5Y</option>
           </select>
         </label>
       </div>
@@ -398,13 +400,15 @@
           <div class="nav-date" id="detailDate"></div>
           <div class="metric-grid">
             <div class="metric nav"><span>Latest NAV</span><strong id="latestNav">—</strong></div>
+            <div class="metric"><span>1M return</span><strong id="return1m">—</strong></div>
+            <div class="metric"><span>6M return</span><strong id="return6m">—</strong></div>
             <div class="metric"><span>1Y return</span><strong id="return1y">—</strong></div>
             <div class="metric"><span>2Y CAGR</span><strong id="return2y">—</strong></div>
             <div class="metric"><span>3Y CAGR</span><strong id="return3y">—</strong></div>
             <div class="metric"><span>4Y CAGR</span><strong id="return4y">—</strong></div>
             <div class="metric"><span>5Y CAGR</span><strong id="return5y">—</strong></div>
           </div>
-          <p class="detail-disclaimer">Returns are calculated from the available NAV history and are point-to-point illustrations. Past performance does not guarantee future returns.</p>
+          <p class="detail-disclaimer">Returns are calculated from the available NAV history. 1M and 6M are absolute point-to-point returns; 1Y to 5Y are annualised. Past performance does not guarantee future returns.</p>
           <div class="detail-actions">
             <a class="primary-action" id="schemeWhatsApp" href="#" target="_blank" rel="noopener">Ask RNK about this fund</a>
             <button class="secondary-action" type="button" data-close-modal>Close</button>
@@ -427,7 +431,7 @@
       draftAmcs: new Set(),
       amcQuery: '',
       visible: 20,
-      returnPeriod: 3,
+      returnPeriod: '3y',
       focusedBeforeAmc: null,
       focusedBeforeModal: null
     };
@@ -439,6 +443,15 @@
     let returnObserver = null;
     const DAY = 24 * 60 * 60 * 1000;
     const YEAR = 365 * DAY;
+    const RETURN_PERIODS = Object.freeze({
+      '1m': { label: '1M', months: 1, annualised: false },
+      '6m': { label: '6M', months: 6, annualised: false },
+      '1y': { label: '1Y', months: 12, annualised: true },
+      '2y': { label: '2Y', months: 24, annualised: true },
+      '3y': { label: '3Y', months: 36, annualised: true },
+      '4y': { label: '4Y', months: 48, annualised: true },
+      '5y': { label: '5Y', months: 60, annualised: true }
+    });
     const AMC_DEFINITIONS = [
       ['360 ONE Mutual Fund', /^(360\s*ONE|IIFL)\b/i],
       ['Abakkus Mutual Fund', /^Abakkus\b/i],
@@ -764,7 +777,7 @@
         returnValue.dataset.returnCode = scheme.code;
         returnValue.textContent = 'Loading…';
         const returnLabel = document.createElement('small');
-        returnLabel.textContent = `${state.returnPeriod}Y`;
+        returnLabel.textContent = RETURN_PERIODS[state.returnPeriod].label;
         returnBox.append(returnValue, returnLabel);
 
         row.append(mark, copy, returnBox);
@@ -845,18 +858,32 @@
       return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(value);
     }
 
-    function trailingReturn(records, years) {
+    function monthsBefore(date, months) {
+      const target = new Date(date.getTime());
+      const day = target.getUTCDate();
+      target.setUTCDate(1);
+      target.setUTCMonth(target.getUTCMonth() - months);
+      const lastDay = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+      target.setUTCDate(Math.min(day, lastDay));
+      return target;
+    }
+
+    function periodReturn(records, periodKey) {
+      const period = RETURN_PERIODS[periodKey];
       const latest = records[records.length - 1];
-      const target = new Date(latest.date.getTime());
-      target.setUTCFullYear(target.getUTCFullYear() - years);
+      if (!period || !latest) return null;
+      const target = monthsBefore(latest.date, period.months);
       let base = null;
       records.forEach((record) => {
         if (record.date <= target && (!base || record.date > base.date)) base = record;
       });
-      if (!base || (target - base.date) / DAY > 45 || base.nav <= 0 || latest.nav <= 0) return null;
+      const toleranceDays = period.months < 12 ? 15 : 45;
+      if (!base || (target - base.date) / DAY > toleranceDays || base.nav <= 0 || latest.nav <= 0) return null;
+      const growth = latest.nav / base.nav;
+      if (!period.annualised) return (growth - 1) * 100;
       const elapsedYears = (latest.date - base.date) / YEAR;
       if (elapsedYears <= 0) return null;
-      return (Math.pow(latest.nav / base.nav, 1 / elapsedYears) - 1) * 100;
+      return (Math.pow(growth, 1 / elapsedYears) - 1) * 100;
     }
 
     function recordsFromPayload(payload) {
@@ -899,7 +926,9 @@
         const records = recordsFromPayload(payload);
         if (!records.length) throw new Error('NAV history unavailable');
         const values = {};
-        [1, 2, 3, 4, 5].forEach((years) => { values[years] = trailingReturn(records, years); });
+        Object.keys(RETURN_PERIODS).forEach((periodKey) => {
+          values[periodKey] = periodReturn(records, periodKey);
+        });
         returnCache.set(scheme.code, { status: 'ready', values });
       } catch (error) {
         returnCache.set(scheme.code, { status: 'error' });
@@ -1005,11 +1034,13 @@
         document.getElementById('detailMeta').textContent = [meta.fund_house, meta.scheme_category].filter(Boolean).join(' • ') || `${categoryFor(name)} • ${planFor(name)} plan`;
         document.getElementById('detailDate').textContent = `Latest available NAV dated ${formatDate(latest.date)}`;
         document.getElementById('latestNav').textContent = formatNav(latest.nav);
-        showReturn('return1y', trailingReturn(records, 1));
-        showReturn('return2y', trailingReturn(records, 2));
-        showReturn('return3y', trailingReturn(records, 3));
-        showReturn('return4y', trailingReturn(records, 4));
-        showReturn('return5y', trailingReturn(records, 5));
+        showReturn('return1m', periodReturn(records, '1m'));
+        showReturn('return6m', periodReturn(records, '6m'));
+        showReturn('return1y', periodReturn(records, '1y'));
+        showReturn('return2y', periodReturn(records, '2y'));
+        showReturn('return3y', periodReturn(records, '3y'));
+        showReturn('return4y', periodReturn(records, '4y'));
+        showReturn('return5y', periodReturn(records, '5y'));
         document.getElementById('schemeWhatsApp').href = `https://wa.me/919817714501?text=${encodeURIComponent(`Hello RNK Finwealth Services, I want details about ${name}.`)}`;
         document.getElementById('detailLoading').hidden = true;
         document.getElementById('detailContent').hidden = false;
@@ -1048,7 +1079,7 @@
     document.getElementById('applyAmcFilter').addEventListener('click', applyAmcSelection);
     document.querySelectorAll('[data-close-amc-filter]').forEach((button) => button.addEventListener('click', closeAmcFilter));
     document.getElementById('returnPeriod').addEventListener('change', (event) => {
-      state.returnPeriod = Number(event.target.value);
+      state.returnPeriod = event.target.value;
       renderFunds();
     });
     document.querySelectorAll('[data-category]').forEach((button) => button.addEventListener('click', () => setCategory(button.dataset.category)));
