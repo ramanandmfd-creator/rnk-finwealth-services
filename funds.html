@@ -433,7 +433,10 @@
     };
     const detailCache = new Map();
     const returnCache = new Map();
-    let returnQueueGeneration = 0;
+    const returnLoadQueue = [];
+    const queuedReturnCodes = new Set();
+    let activeReturnLoads = 0;
+    let returnObserver = null;
     const DAY = 24 * 60 * 60 * 1000;
     const YEAR = 365 * DAY;
     const AMC_DEFINITIONS = [
@@ -904,20 +907,53 @@
       updateReturnCells(scheme.code);
     }
 
+    function drainReturnQueue() {
+      while (activeReturnLoads < 4 && returnLoadQueue.length) {
+        const scheme = returnLoadQueue.shift();
+        activeReturnLoads += 1;
+        loadSchemeReturns(scheme).finally(() => {
+          activeReturnLoads -= 1;
+          queuedReturnCodes.delete(scheme.code);
+          drainReturnQueue();
+        });
+      }
+    }
+
+    function queueSchemeReturn(scheme) {
+      if (returnCache.has(scheme.code)) {
+        updateReturnCells(scheme.code);
+        return;
+      }
+      if (queuedReturnCodes.has(scheme.code)) return;
+      queuedReturnCodes.add(scheme.code);
+      returnLoadQueue.push(scheme);
+      drainReturnQueue();
+    }
+
     function hydrateVisibleReturns(schemes) {
-      const generation = ++returnQueueGeneration;
-      const queue = schemes.filter((scheme, index, all) => all.findIndex((item) => item.code === scheme.code) === index);
-      queue.forEach((scheme) => {
-        if (returnCache.has(scheme.code)) updateReturnCells(scheme.code);
+      if (returnObserver) returnObserver.disconnect();
+      const schemesByCode = new Map(schemes.map((scheme) => [scheme.code, scheme]));
+      const cells = [...document.querySelectorAll('[data-return-code]')];
+      cells.forEach((cell) => {
+        if (returnCache.has(cell.dataset.returnCode)) updateReturnCells(cell.dataset.returnCode);
       });
-      const pending = queue.filter((scheme) => !returnCache.has(scheme.code));
-      const worker = async () => {
-        while (pending.length && generation === returnQueueGeneration) {
-          const scheme = pending.shift();
-          await loadSchemeReturns(scheme);
-        }
-      };
-      Promise.all(Array.from({ length: Math.min(4, pending.length) }, worker));
+
+      if (!('IntersectionObserver' in window)) {
+        schemes.forEach(queueSchemeReturn);
+        return;
+      }
+
+      returnObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          returnObserver.unobserve(entry.target);
+          const scheme = schemesByCode.get(entry.target.dataset.returnCode);
+          if (scheme) queueSchemeReturn(scheme);
+        });
+      }, { rootMargin: '300px 0px' });
+      cells.forEach((cell) => {
+        if (!returnCache.has(cell.dataset.returnCode)) returnObserver.observe(cell);
+      });
     }
 
     function showReturn(elementId, value) {
