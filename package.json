@@ -1,0 +1,13 @@
+{
+  "name": "rnk-finwealth-services",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "node --check api/mutual-funds.js && node --check api/nseinvest.js && node --check lib/nseinvest.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
