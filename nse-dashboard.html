@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>NSEInvest UAT Console | RNK Finwealth Services</title>
+  <style>
+    :root { --navy:#052e4f; --teal:#087f78; --green:#08a77e; --gold:#edb52b; --ink:#173447; --muted:#687d8c; --line:#d8e5ea; --soft:#f2f8fa; --red:#b42318; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--soft); font-family:Arial,sans-serif; line-height:1.5; }
+    button,input,select { font:inherit; }
+    .top { padding:22px 5%; color:#fff; background:linear-gradient(135deg,var(--navy),var(--teal)); }
+    .top-inner,.main { width:min(1100px,92%); margin:auto; }
+    .brand { font-size:22px; font-weight:900; }
+    .brand b { color:var(--gold); }
+    h1 { margin:18px 0 5px; font-family:Georgia,serif; font-size:clamp(32px,5vw,48px); }
+    .top p { max-width:720px; margin:0; color:#dcecf1; }
+    .main { margin-top:-22px; padding-bottom:45px; }
+    .access,.card,.result { border:1px solid var(--line); border-radius:17px; background:#fff; box-shadow:0 14px 38px #052e4f12; }
+    .access { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; padding:18px; }
+    label { display:block; margin-bottom:6px; color:#39586b; font-size:13px; font-weight:900; }
+    input,select { width:100%; height:47px; padding:9px 11px; border:1px solid #c8d9e1; border-radius:10px; color:var(--ink); background:#fff; }
+    .uppercase { text-transform:uppercase; }
+    button { min-height:47px; padding:10px 17px; border:0; border-radius:10px; color:#fff; background:var(--green); font-weight:900; cursor:pointer; }
+    button:disabled { cursor:wait; opacity:.65; }
+    .status { align-self:end; min-width:155px; background:var(--navy); }
+    .notice { margin:16px 0; padding:13px 15px; border-radius:11px; color:#725a18; background:#fff8e3; font-size:12px; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .card { padding:20px; }
+    .card h2 { margin:0 0 5px; color:var(--navy); font-size:21px; }
+    .card p { margin:0 0 16px; color:var(--muted); font-size:13px; }
+    .fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
+    .fields .full { grid-column:1/-1; }
+    .card button { width:100%; margin-top:15px; }
+    .result { margin-top:17px; overflow:hidden; }
+    .result-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:15px 18px; color:#fff; background:var(--navy); }
+    .result-head h2 { margin:0; font-size:18px; }
+    .download { display:none; min-height:auto; padding:7px 11px; color:var(--navy); background:#fff; font-size:12px; }
+    pre { min-height:180px; max-height:520px; margin:0; padding:18px; overflow:auto; color:#dcecf1; background:#082438; font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .error { color:#ffd0ca; }
+    .foot { margin:16px 0 0; color:var(--muted); font-size:11px; text-align:center; }
+    @media(max-width:760px){ .access,.grid,.fields{grid-template-columns:1fr}.fields .full{grid-column:auto}.status{width:100%}.main{width:94%} }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">RNK <b>FINWEALTH</b></div>
+      <h1>NSEInvest UAT Console</h1>
+      <p>Secure, server-side access to approved NSEInvest data and report APIs.</p>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="access">
+      <div>
+        <label for="accessToken">RNK Admin Access Token</label>
+        <input id="accessToken" type="password" autocomplete="off" placeholder="Enter the private dashboard token">
+      </div>
+      <button class="status" id="checkStatus" type="button">Check Setup</button>
+    </section>
+
+    <p class="notice"><strong>UAT testing only:</strong> Transaction, registration, payment, cancellation and document-upload APIs are disabled. This page is not linked from the public homepage.</p>
+
+    <section class="grid">
+      <form class="card" data-action="client-master">
+        <h2>Client Master Report</h2>
+        <p>Retrieve a registered client's master record.</p>
+        <div class="fields">
+          <div><label>Client Code</label><input name="client_code" type="text" maxlength="30"></div>
+          <div><label>PAN</label><input class="uppercase" name="PAN" type="text" maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]"></div>
+          <div><label>From Date</label><input name="from_date" type="text" placeholder="DD-MM-YYYY"></div>
+          <div><label>To Date</label><input name="to_date" type="text" placeholder="DD-MM-YYYY"></div>
+        </div>
+        <button type="submit">Get Client Data</button>
+      </form>
+
+      <form class="card" data-action="client-kyc-report">
+        <h2>Client KYC Status</h2>
+        <p>Check KYC report information for a client.</p>
+        <div class="fields">
+          <div><label>PAN</label><input class="uppercase" name="pan_no" type="text" maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]"></div>
+          <div><label>Client Code</label><input name="client_code" type="text" maxlength="30"></div>
+          <div><label>From Date</label><input name="from_date" type="text" placeholder="DD-MM-YYYY"></div>
+          <div><label>To Date</label><input name="to_date" type="text" placeholder="DD-MM-YYYY"></div>
+        </div>
+        <button type="submit">Check KYC Report</button>
+      </form>
+
+      <form class="card" data-action="order-status">
+        <h2>Order Status Report</h2>
+        <p>Retrieve order status for a selected date range.</p>
+        <div class="fields">
+          <div><label>From Date</label><input name="from_date" type="date" required></div>
+          <div><label>To Date</label><input name="to_date" type="date" required></div>
+          <div><label>Transaction Type</label><select name="trans_type"><option>ALL</option><option>PURCHASE</option><option>REDEMPTION</option></select></div>
+          <div><label>Order Type</label><input name="order_type" type="text" value="ALL"></div>
+          <div class="full"><label>Sub-order Type</label><input name="sub_order_type" type="text" value="ALL"></div>
+        </div>
+        <button type="submit">Get Order Status</button>
+      </form>
+
+      <form class="card" data-action="scheme-master-nav">
+        <h2>Scheme Master &amp; NAV</h2>
+        <p>Request the NSEInvest scheme-master or NAV download.</p>
+        <div class="fields">
+          <div class="full"><label>File Type</label><select name="file_type"><option value="SCH">Scheme Master (SCH)</option><option value="NAV">NAV</option></select></div>
+        </div>
+        <button type="submit">Download Data</button>
+      </form>
+    </section>
+
+    <section class="result" aria-live="polite">
+      <div class="result-head"><h2>API Result</h2><button class="download" id="downloadResult" type="button">Download JSON</button></div>
+      <pre id="result">Enter the admin token, click “Check Setup”, then run a report.</pre>
+    </section>
+    <p class="foot">RNK Finwealth Services · Mutual Fund Distributor · ARN 291823</p>
+  </main>
+
+  <script>
+    const tokenInput = document.getElementById('accessToken');
+    const resultBox = document.getElementById('result');
+    const downloadButton = document.getElementById('downloadResult');
+    let latestResult = null;
+
+    function token() { return tokenInput.value.trim(); }
+    function show(value, isError = false) {
+      latestResult = value;
+      resultBox.className = isError ? 'error' : '';
+      resultBox.textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+      downloadButton.style.display = isError || value === null ? 'none' : 'inline-block';
+    }
+
+    async function callApi(options = {}) {
+      if (!token()) throw new Error('Please enter the RNK Admin Access Token first.');
+      const response = await fetch('/api/nseinvest', {
+        ...options,
+        headers: {
+          Authorization: `Bearer ${token()}`,
+          ...(options.body ? { 'Content-Type': 'application/json' } : {})
+        }
+      });
+      const data = await response.json().catch(() => ({ error: 'Invalid server response.' }));
+      if (!response.ok) throw new Error(data.error || `Request failed (${response.status}).`);
+      return data;
+    }
+
+    document.getElementById('checkStatus').addEventListener('click', async (event) => {
+      event.currentTarget.disabled = true;
+      show('Checking secure server configuration...');
+      try {
+        const data = await callApi();
+        show({ status: 'NSEInvest server configuration is ready', environment: data.environment, available_reports: data.actions.length });
+      } catch (error) {
+        show(error.message, true);
+      } finally {
+        event.currentTarget.disabled = false;
+      }
+    });
+
+    document.querySelectorAll('form[data-action]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        const payload = Object.fromEntries([...new FormData(form).entries()]
+          .map(([key, value]) => [key, String(value).trim()])
+          .filter(([, value]) => value !== ''));
+        if (payload.PAN) payload.PAN = payload.PAN.toUpperCase();
+        if (payload.pan_no) payload.pan_no = payload.pan_no.toUpperCase();
+        button.disabled = true;
+        show(`Requesting ${form.dataset.action} from NSEInvest...`);
+        try {
+          const data = await callApi({ method: 'POST', body: JSON.stringify({ action: form.dataset.action, payload }) });
+          show(data);
+        } catch (error) {
+          show(error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+    });
+
+    downloadButton.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(latestResult, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `nseinvest-result-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
