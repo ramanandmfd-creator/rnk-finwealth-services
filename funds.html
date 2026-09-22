@@ -279,6 +279,28 @@
     .header-contact { min-height: 42px; display: inline-flex; align-items: center; padding: 9px 15px; border-radius: 999px; background: var(--app-green); }
 
     .main { width: min(760px, 100%); min-height: calc(100vh - 78px); margin: 0 auto; padding: 0 0 42px; background: #fff; }
+    .best-funds-section { padding: 25px 24px 27px; border-bottom: 8px solid #f3f5f6; background: #fff; }
+    .best-funds-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .best-funds-kicker { display: block; margin-bottom: 3px; color: var(--app-green-dark); font-size: 11px; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
+    .best-funds-head h2 { margin: 0; color: #282d30; font-size: 23px; line-height: 1.2; }
+    .best-funds-period { flex: 0 0 auto; padding: 7px 11px; border-radius: 999px; background: #e9faf5; color: #008b69; font-size: 13px; font-weight: 900; }
+    .best-funds-grid { overflow: hidden; border: 1px solid var(--app-line); border-radius: 17px; }
+    .best-fund-item { width: 100%; display: grid; grid-template-columns: 45px minmax(0, 1fr) 82px; align-items: center; gap: 13px; min-height: 82px; padding: 12px 15px; border: 0; border-bottom: 1px solid var(--app-line); background: #fff; color: var(--app-text); text-align: left; cursor: pointer; }
+    .best-fund-item:last-child { border-bottom: 0; }
+    .best-fund-item:hover { background: #fbfcfc; }
+    .best-fund-mark { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(145deg, #07547a, #00a67e); color: #fff; font-size: 11px; font-weight: 900; }
+    .best-fund-mark.gold { background: linear-gradient(145deg, #f0c548, #d99a00); color: #3d310b; }
+    .best-fund-mark.red { background: linear-gradient(145deg, #ef5c55, #b3212c); }
+    .best-fund-mark.purple { background: linear-gradient(145deg, #735de0, #46339f); }
+    .best-fund-name { display: block; color: #353a3d; font-size: 15px; font-weight: 650; line-height: 1.35; }
+    .best-fund-category { display: block; margin-top: 3px; color: #888e91; font-size: 12px; }
+    .best-fund-return { text-align: right; }
+    .best-fund-return strong { display: block; color: var(--app-green); font-size: 16px; }
+    .best-fund-return small { display: block; margin-top: 3px; color: #8a9093; font-size: 12px; }
+    .best-funds-help { margin: 11px 1px 0; color: #7f8588; font-size: 12px; }
+    .all-funds-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; padding: 0 24px 14px; }
+    .all-funds-heading h2 { margin: 0; color: #303538; font-size: 21px; }
+    .all-funds-heading span { color: #868c8f; font-size: 12px; }
     .search-panel { padding: 17px 0 14px; border: 0; border-bottom: 1px solid var(--app-line); border-radius: 0; box-shadow: none; }
     .filter-scroll { display: flex; align-items: center; gap: 10px; overflow-x: auto; padding: 0 24px 3px; scrollbar-width: none; }
     .filter-scroll::-webkit-scrollbar { display: none; }
@@ -348,6 +370,7 @@
       .page-heading h1 { font-size: 23px; }
       .header-contact { display: none; }
       .main { width: 100%; margin: 0; }
+      .best-funds-section { padding-inline: 20px; }
       .search-panel { padding-top: 15px; }
       .filter-scroll { padding-inline: 27px; }
       .directory-search { padding-inline: 27px; }
@@ -368,6 +391,14 @@
       .back-link { width: 37px; height: 37px; font-size: 27px; }
       .page-heading h1 { font-size: 21px; }
       .data-status { max-width: 270px; }
+      .best-funds-section { padding: 21px 16px 23px; }
+      .best-funds-head h2 { font-size: 20px; }
+      .best-fund-item { grid-template-columns: 43px minmax(0, 1fr) 78px; gap: 11px; min-height: 80px; padding: 11px 12px; }
+      .best-fund-mark { width: 41px; height: 41px; }
+      .best-fund-name { font-size: 14px; }
+      .best-fund-category { font-size: 11px; }
+      .best-fund-return strong { font-size: 15px; }
+      .all-funds-heading { padding-inline: 20px; }
       .filter-scroll, .directory-search { padding-inline: 20px; }
       .results-meta { padding-inline: 20px; }
       .fund-row { grid-template-columns: 52px minmax(0, 1fr) 82px; gap: 12px; min-height: 105px; padding: 16px 20px; }
@@ -398,7 +429,36 @@
   </header>
 
   <main class="main">
-    <section class="search-panel" aria-label="Search and filter mutual funds">
+    <section class="best-funds-section" id="bestFunds" aria-labelledby="bestFundsTitle">
+      <div class="best-funds-head">
+        <div><span class="best-funds-kicker">Popular Funds</span><h2 id="bestFundsTitle">Best Performing Funds</h2></div>
+        <span class="best-funds-period">3Y Performance</span>
+      </div>
+      <div class="best-funds-grid">
+        <button class="best-fund-item" type="button" data-best-fund-query="SBI Gold">
+          <span class="best-fund-mark gold">SBI</span><span><strong class="best-fund-name">SBI Gold Direct Plan–Growth</strong><small class="best-fund-category">Gold Fund • Direct Growth</small></span><span class="best-fund-return"><strong>+35.65%</strong><small>3Y</small></span>
+        </button>
+        <button class="best-fund-item" type="button" data-best-fund-query="ITI Small Cap">
+          <span class="best-fund-mark red">ITI</span><span><strong class="best-fund-name">ITI Small Cap Fund Direct Growth</strong><small class="best-fund-category">Small Cap • Direct Growth</small></span><span class="best-fund-return"><strong>+25.73%</strong><small>3Y</small></span>
+        </button>
+        <button class="best-fund-item" type="button" data-best-fund-query="Bandhan Small Cap">
+          <span class="best-fund-mark">B</span><span><strong class="best-fund-name">Bandhan Small Cap Fund Direct Growth</strong><small class="best-fund-category">Small Cap • Direct Growth</small></span><span class="best-fund-return"><strong>+25.30%</strong><small>3Y</small></span>
+        </button>
+        <button class="best-fund-item" type="button" data-best-fund-query="HSBC Midcap">
+          <span class="best-fund-mark red">HSBC</span><span><strong class="best-fund-name">HSBC Midcap Fund Direct Growth</strong><small class="best-fund-category">Mid Cap • Direct Growth</small></span><span class="best-fund-return"><strong>+24.76%</strong><small>3Y</small></span>
+        </button>
+        <button class="best-fund-item" type="button" data-best-fund-query="Invesco India Small Cap">
+          <span class="best-fund-mark purple">INV</span><span><strong class="best-fund-name">Invesco India Small Cap Fund Direct Growth</strong><small class="best-fund-category">Small Cap • Direct Growth</small></span><span class="best-fund-return"><strong>+23.66%</strong><small>3Y</small></span>
+        </button>
+        <button class="best-fund-item" type="button" data-best-fund-query="Motilal Oswal Large">
+          <span class="best-fund-mark">MO</span><span><strong class="best-fund-name">Motilal Oswal Large &amp; Midcap Fund Direct Growth</strong><small class="best-fund-category">Large &amp; Mid Cap • Direct Growth</small></span><span class="best-fund-return"><strong>+22.50%</strong><small>3Y</small></span>
+        </button>
+      </div>
+      <p class="best-funds-help">Tap any fund to find it in the complete fund directory below.</p>
+    </section>
+
+    <section class="search-panel" id="allFunds" aria-label="Search and filter mutual funds">
+      <div class="all-funds-heading"><h2>All Mutual Funds</h2><span>Search &amp; filter</span></div>
       <div class="filter-scroll" id="categoryChips" aria-label="Fund filters">
         <button class="filter-icon-button" id="amcFilter" type="button" aria-haspopup="dialog" aria-label="Open fund filters"><span aria-hidden="true">☷</span><strong class="sr-only" id="amcFilterText">All Fund Houses</strong></button>
         <label class="filter-select-chip" for="sortFilter"><span aria-hidden="true">☰</span><select id="sortFilter" aria-label="Sort funds"><option value="name">Sort by</option><option value="amc">Fund house A–Z</option><option value="category">Category</option></select></label>
@@ -1162,6 +1222,17 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => applyFilters(true), 120);
     });
+    document.querySelectorAll('[data-best-fund-query]').forEach((button) => button.addEventListener('click', () => {
+      state.category = 'All';
+      state.selectedAmcs.clear();
+      document.querySelectorAll('[data-category]').forEach((chip) => chip.classList.toggle('active', chip.dataset.category === 'All'));
+      document.getElementById('planFilter').value = 'all';
+      document.getElementById('growthOnly').checked = false;
+      document.getElementById('fundSearch').value = button.dataset.bestFundQuery;
+      updateAmcControls();
+      applyFilters(true);
+      document.getElementById('allFunds').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
     document.getElementById('planFilter').addEventListener('change', () => applyFilters(true));
     document.getElementById('sortFilter').addEventListener('change', () => applyFilters(true));
     document.getElementById('growthOnly').addEventListener('change', () => applyFilters(true));
