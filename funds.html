@@ -586,6 +586,7 @@
       amcQuery: '',
       visible: 20,
       returnPeriod: '3y',
+      directoryLoading: true,
       focusedBeforeAmc: null,
       focusedBeforeModal: null
     };
@@ -777,7 +778,12 @@
 
     function updateAmcApplyText() {
       const total = countForAmcs(state.draftAmcs);
-      document.getElementById('applyAmcFilter').textContent = `View ${total.toLocaleString('en-IN')} ${total === 1 ? 'fund' : 'funds'}`;
+      const applyButton = document.getElementById('applyAmcFilter');
+      const waitingForFirstPage = state.directoryLoading && !state.schemes.length;
+      applyButton.disabled = waitingForFirstPage;
+      applyButton.textContent = waitingForFirstPage
+        ? 'Loading funds…'
+        : `View ${total.toLocaleString('en-IN')} ${total === 1 ? 'fund' : 'funds'}`;
     }
 
     function renderAmcChoices() {
@@ -809,7 +815,9 @@
       if (!groups.length) {
         const empty = document.createElement('div');
         empty.className = 'amc-filter-empty';
-        empty.textContent = 'No matching fund house found.';
+        empty.textContent = state.directoryLoading && !state.schemes.length
+          ? 'Fund houses are loading…'
+          : 'No matching fund house found.';
         list.appendChild(empty);
       }
       updateAmcApplyText();
@@ -969,34 +977,97 @@
       document.getElementById('amcSummary').textContent = 'Fund houses temporarily unavailable';
     }
 
-    async function loadDirectory() {
-      document.getElementById('dataStatus').textContent = 'Loading the daily fund directory…';
-      try {
-        const schemesByCode = new Map();
-        const pageSize = 10000;
-        for (let page = 0; page < 5; page += 1) {
-          const offset = page * pageSize;
-          const response = await fetch(`/api/mutual-funds?limit=${pageSize}&offset=${offset}`, { headers: { Accept: 'application/json' } });
-          const payload = await response.json();
-          if (!response.ok) throw new Error(payload.error || 'Please try again in a moment.');
-          const pageSchemes = normaliseSchemes(payload);
-          let added = 0;
-          pageSchemes.forEach((scheme) => {
-            if (!schemesByCode.has(scheme.code)) {
-              schemesByCode.set(scheme.code, scheme);
-              added += 1;
-            }
-          });
-          document.getElementById('dataStatus').textContent = `${schemesByCode.size.toLocaleString('en-IN')} schemes loaded…`;
-          if (!added || pageSchemes.length < pageSize) break;
+    async function fetchDirectoryPage(limit, offset) {
+      const response = await fetch(`/api/mutual-funds?limit=${limit}&offset=${offset}`, { headers: { Accept: 'application/json' } });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || 'Please try again in a moment.');
+      return normaliseSchemes(payload);
+    }
+
+    async function fetchCurrentDirectory() {
+      const response = await fetch('/api/mutual-funds?directory=1', { headers: { Accept: 'application/json' } });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || 'Please try again in a moment.');
+      return normaliseSchemes(payload);
+    }
+
+    function addDirectoryPage(schemesByCode, pageSchemes) {
+      let added = 0;
+      pageSchemes.forEach((scheme) => {
+        if (!schemesByCode.has(scheme.code)) {
+          schemesByCode.set(scheme.code, scheme);
+          added += 1;
         }
-        state.schemes = [...schemesByCode.values()];
-        if (!state.schemes.length) throw new Error('No scheme records were received.');
-        updateAmcControls();
-        document.getElementById('dataStatus').textContent = `${state.schemes.length.toLocaleString('en-IN')} schemes across ${getAmcGroups().length.toLocaleString('en-IN')} fund houses • NAV details update daily`;
-        applyFilters(true);
+      });
+      return added;
+    }
+
+    function refreshDirectory(schemesByCode, resetVisible = false) {
+      state.schemes = [...schemesByCode.values()];
+      updateAmcControls();
+      applyFilters(resetVisible);
+      if (!document.getElementById('amcFilterModal').hidden) renderAmcChoices();
+    }
+
+    async function loadDirectory() {
+      const dataStatus = document.getElementById('dataStatus');
+      const schemesByCode = new Map();
+      state.directoryLoading = true;
+      dataStatus.textContent = 'Loading the daily fund directory…';
+      if (!document.getElementById('amcFilterModal').hidden) renderAmcChoices();
+
+      try {
+        try {
+          const currentSchemes = await fetchCurrentDirectory();
+          addDirectoryPage(schemesByCode, currentSchemes);
+          if (schemesByCode.size) {
+            state.directoryLoading = false;
+            refreshDirectory(schemesByCode, true);
+            dataStatus.textContent = `${state.schemes.length.toLocaleString('en-IN')} current schemes across ${getAmcGroups().length.toLocaleString('en-IN')} fund houses • NAV details update daily`;
+            return;
+          }
+        } catch (error) {
+          dataStatus.textContent = 'Loading the backup fund directory…';
+        }
+
+        // Paint a useful directory quickly on mobile, then fill the remaining pages progressively.
+        const firstPage = await fetchDirectoryPage(2500, 0);
+        addDirectoryPage(schemesByCode, firstPage);
+        if (!schemesByCode.size) throw new Error('No scheme records were received.');
+        refreshDirectory(schemesByCode, true);
+        dataStatus.textContent = `${schemesByCode.size.toLocaleString('en-IN')} schemes loaded • Loading more fund houses…`;
+
+        const remainingPages = [
+          { limit: 7500, offset: 2500 },
+          { limit: 10000, offset: 10000 },
+          { limit: 10000, offset: 20000 },
+          { limit: 10000, offset: 30000 },
+          { limit: 10000, offset: 40000 }
+        ];
+        let failedPages = 0;
+
+        for (const page of remainingPages) {
+          try {
+            const pageSchemes = await fetchDirectoryPage(page.limit, page.offset);
+            const added = addDirectoryPage(schemesByCode, pageSchemes);
+            if (added) refreshDirectory(schemesByCode);
+            dataStatus.textContent = `${schemesByCode.size.toLocaleString('en-IN')} schemes loaded • Loading more fund houses…`;
+            if (pageSchemes.length < page.limit) break;
+          } catch (error) {
+            failedPages += 1;
+          }
+        }
+
+        state.directoryLoading = false;
+        if (!document.getElementById('amcFilterModal').hidden) renderAmcChoices();
+        const directorySummary = `${state.schemes.length.toLocaleString('en-IN')} schemes across ${getAmcGroups().length.toLocaleString('en-IN')} fund houses`;
+        dataStatus.textContent = failedPages
+          ? `${directorySummary} • Some records are still updating`
+          : `${directorySummary} • NAV details update daily`;
       } catch (error) {
-        document.getElementById('dataStatus').textContent = 'Daily data is temporarily unavailable';
+        state.directoryLoading = false;
+        if (!document.getElementById('amcFilterModal').hidden) renderAmcChoices();
+        dataStatus.textContent = 'Daily data is temporarily unavailable';
         showDirectoryError(error.message || 'Please try again in a moment.');
       }
     }
