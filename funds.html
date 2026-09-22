@@ -257,104 +257,187 @@
       .return-period { align-items: flex-end; flex-direction: column; gap: 4px; }
     }
   </style>
+  <style>
+    /* Mobile fund directory — reference-led interface */
+    :root {
+      --app-green: #00b98b;
+      --app-green-dark: #009f78;
+      --app-text: #303538;
+      --app-muted: #7f8588;
+      --app-line: #e6e8e9;
+    }
+
+    body { color: var(--app-text); background: #f3f5f6; }
+    .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+    .hero { display: none; }
+    .site-header { position: sticky; top: 0; z-index: 35; min-height: 78px; padding: 14px max(24px, calc((100% - 760px) / 2)); gap: 16px; border-bottom: 1px solid var(--app-line); background: rgba(255,255,255,.97); backdrop-filter: blur(14px); }
+    .back-link { flex: 0 0 auto; width: 42px; height: 42px; justify-content: center; border-radius: 50%; color: var(--app-text); font-size: 30px; font-weight: 400; }
+    .back-link:hover { background: #f2f4f4; }
+    .page-heading { min-width: 0; margin-right: auto; }
+    .page-heading h1 { margin: 0; color: #282d30; font-size: 26px; line-height: 1.15; letter-spacing: -.02em; }
+    .data-status { display: block; overflow: hidden; max-width: 520px; margin-top: 3px; color: #8a8f92; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .header-contact { min-height: 42px; display: inline-flex; align-items: center; padding: 9px 15px; border-radius: 999px; background: var(--app-green); }
+
+    .main { width: min(760px, 100%); min-height: calc(100vh - 78px); margin: 0 auto; padding: 0 0 42px; background: #fff; }
+    .search-panel { padding: 17px 0 14px; border: 0; border-bottom: 1px solid var(--app-line); border-radius: 0; box-shadow: none; }
+    .filter-scroll { display: flex; align-items: center; gap: 10px; overflow-x: auto; padding: 0 24px 3px; scrollbar-width: none; }
+    .filter-scroll::-webkit-scrollbar { display: none; }
+    .filter-icon-button, .filter-chip, .category-chip, .filter-select-chip { flex: 0 0 auto; min-height: 48px; border: 1px solid #dfe2e3; border-radius: 24px; background: #fff; color: #33383b; font-size: 15px; font-weight: 700; box-shadow: none; }
+    .filter-icon-button { width: 48px; padding: 0; display: grid; place-items: center; font-size: 23px; cursor: pointer; }
+    .filter-chip, .category-chip { padding: 10px 17px; cursor: pointer; }
+    .filter-chip:hover, .category-chip:hover, .filter-icon-button:hover { border-color: #bfc6c8; background: #fafbfb; }
+    .category-chip.active, .filter-chip.active { border-color: #9edfcf; background: #e9faf5; color: #008b69; }
+    .filter-select-chip { position: relative; display: flex; align-items: center; gap: 7px; padding: 0 14px; }
+    .filter-select-chip select { width: auto; min-width: 94px; height: 46px; padding: 0 25px 0 0; border: 0; outline: 0; background: transparent; color: #33383b; font-weight: 750; cursor: pointer; }
+    .filter-select-chip select:focus-visible { outline: 0; }
+    .growth-chip { display: inline-flex; align-items: center; gap: 8px; }
+    .growth-chip input { width: 18px; height: 18px; accent-color: var(--app-green); }
+    .directory-search { padding: 13px 24px 0; }
+    .directory-search .search-box { position: relative; }
+    .directory-search .search-box span { left: 16px; color: #62696c; }
+    .directory-search .search-box input { height: 50px; padding-left: 47px; border: 1px solid #dfe3e4; border-radius: 15px; background: #fafbfb; color: var(--app-text); }
+
+    #fundDirectory { margin: 0; }
+    .results-meta { min-height: 68px; margin: 0; padding: 15px 27px 12px; border-bottom: 1px solid var(--app-line); color: #33383b; font-size: 15px; }
+    .results-meta strong { color: #303538; font-size: 17px; }
+    .return-period { gap: 7px; color: #3a3f41; }
+    .return-arrows { color: #555c5f; font-size: 18px; letter-spacing: -5px; transform: translateX(-3px); }
+    .return-period select { min-height: 35px; padding: 3px 2px; border: 0; border-bottom: 2px dotted #999; border-radius: 0; background: #fff; color: #3a3f41; font-size: 15px; font-weight: 900; }
+    .fund-list { border: 0; border-radius: 0; box-shadow: none; }
+    .fund-row { grid-template-columns: 58px minmax(0, 1fr) 96px; gap: 16px; min-height: 112px; padding: 18px 27px; border-bottom: 1px solid var(--app-line); }
+    .fund-row:hover { background: #fbfcfc; }
+    .fund-brand-mark { width: 54px; height: 54px; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); font-size: 13px; }
+    .fund-name { display: -webkit-box; overflow: hidden; color: #33383b; font-size: 17px; font-weight: 500; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .fund-meta { margin-top: 4px; color: #858a8d; font-size: 14px; }
+    .fund-return { min-width: 88px; }
+    .fund-return-value { color: var(--app-green); font-size: 18px; font-weight: 900; }
+    .fund-return small { margin-top: 5px; color: #858a8d; font-size: 13px; }
+    .load-more { min-height: 48px; margin: 22px auto 0; padding: 11px 27px; border-radius: 24px; background: var(--app-green); }
+    .skeleton { height: 112px; margin: 0; border: 0; border-bottom: 1px solid var(--app-line); border-radius: 0; }
+    .source-note { margin: 22px 24px 0; border-color: #e2e7e8; background: #fafcfc; }
+    .footer { padding: 23px 6%; background: #223037; }
+
+    .amc-filter-modal { padding: 22px; }
+    .amc-filter-backdrop { background: rgba(20, 27, 30, .58); }
+    .amc-filter-sheet { width: min(860px, 100%); height: min(760px, calc(100vh - 44px)); max-height: none; grid-template-rows: auto minmax(0, 1fr) auto; border-radius: 20px; }
+    .amc-filter-head { min-height: 76px; grid-template-columns: 46px minmax(0, 1fr) auto; padding: 14px 22px; }
+    .amc-filter-head h2 { font-size: 25px; }
+    .filter-close { font-size: 34px; font-weight: 300; }
+    .filter-clear { color: #8b8f91; text-decoration: underline dotted; text-underline-offset: 6px; }
+    .filter-dialog-body { min-height: 0; display: grid; grid-template-columns: 225px minmax(0, 1fr); }
+    .filter-side-nav { overflow-y: auto; border-right: 1px solid var(--app-line); background: #fbfbfb; }
+    .filter-side-nav button { position: relative; width: 100%; min-height: 82px; padding: 18px 24px; border: 0; border-bottom: 1px solid var(--app-line); background: transparent; color: #858a8d; font-size: 16px; font-weight: 750; text-align: left; cursor: pointer; }
+    .filter-side-nav button:hover { background: #f5f7f7; }
+    .filter-side-nav button.active { background: #fff; color: #303538; }
+    .filter-side-nav button.active::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; border-radius: 0 5px 5px 0; background: var(--app-green); }
+    .filter-dialog-main { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #fff; }
+    .amc-choice-search { margin: 24px 26px 12px; }
+    .amc-choice-search input { height: 55px; border-color: #d9ddde; border-radius: 15px; }
+    .amc-choice-list { padding: 0 26px 10px; }
+    .amc-choice { grid-template-columns: 28px minmax(0, 1fr); min-height: 76px; gap: 15px; }
+    .amc-choice input { width: 24px; height: 24px; }
+    .amc-choice strong { color: #383d3f; font-size: 16px; font-weight: 500; }
+    .amc-choice small { display: none; }
+    .amc-filter-footer { padding: 16px 26px; }
+    .apply-amc-filter { min-height: 58px; border-radius: 13px; background: var(--app-green); font-size: 18px; }
+    .apply-amc-filter:hover { background: var(--app-green-dark); }
+
+    @media (max-width: 720px) {
+      body { background: #fff; }
+      .site-header { min-height: 72px; padding: 12px 22px; }
+      .page-heading h1 { font-size: 23px; }
+      .header-contact { display: none; }
+      .main { width: 100%; margin: 0; }
+      .search-panel { padding-top: 15px; }
+      .filter-scroll { padding-inline: 27px; }
+      .directory-search { padding-inline: 27px; }
+      .source-note, .footer { display: none; }
+      .amc-filter-modal { padding: 0; }
+      .amc-filter-sheet { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+      .amc-filter-head { min-height: 74px; padding: 12px 19px; }
+      .filter-dialog-body { grid-template-columns: 35% minmax(0, 65%); }
+      .filter-side-nav button { min-height: 82px; padding: 17px 20px; font-size: 15px; }
+      .amc-choice-search { margin: 20px 16px 10px; }
+      .amc-choice-list { padding: 0 0 8px 16px; }
+      .amc-choice { min-height: 78px; padding-right: 14px; }
+      .amc-filter-footer { padding: 14px 27px calc(14px + env(safe-area-inset-bottom)); }
+    }
+
+    @media (max-width: 480px) {
+      .site-header { gap: 11px; padding-inline: 18px; }
+      .back-link { width: 37px; height: 37px; font-size: 27px; }
+      .page-heading h1 { font-size: 21px; }
+      .data-status { max-width: 270px; }
+      .filter-scroll, .directory-search { padding-inline: 20px; }
+      .results-meta { padding-inline: 20px; }
+      .fund-row { grid-template-columns: 52px minmax(0, 1fr) 82px; gap: 12px; min-height: 105px; padding: 16px 20px; }
+      .fund-brand-mark { width: 49px; height: 49px; border-radius: 12px; }
+      .fund-name { font-size: 16px; }
+      .fund-meta { font-size: 12px; }
+      .fund-return-value { font-size: 16px; }
+      .return-period select { max-width: 105px; }
+      .amc-filter-head { grid-template-columns: 40px minmax(0, 1fr) auto; padding-inline: 13px; }
+      .amc-filter-head h2 { font-size: 22px; }
+      .filter-side-nav button { min-height: 82px; padding: 15px 13px; font-size: 14px; }
+      .amc-choice-search { margin-inline: 13px; }
+      .amc-choice-list { padding-left: 13px; }
+      .amc-choice { grid-template-columns: 26px minmax(0, 1fr); gap: 12px; min-height: 78px; }
+      .amc-choice input { width: 22px; height: 22px; }
+      .amc-choice strong { font-size: 15px; line-height: 1.35; }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
-    <a class="back-link" href="index.html" aria-label="Back to RNK Finwealth home page">← Home</a>
-    <div class="brand">RNK <b>FINWEALTH</b><small>PLAN • INVEST • GROW</small></div>
+    <a class="back-link" href="index.html" aria-label="Back to RNK Finwealth home page">←</a>
+    <div class="page-heading">
+      <h1>All Mutual Funds</h1>
+      <span class="data-status" id="dataStatus">Loading the daily fund directory…</span>
+    </div>
     <a class="header-contact" href="https://wa.me/919817714501?text=Hello%20RNK%20Finwealth%20Services" target="_blank" rel="noopener">Ask RNK</a>
   </header>
 
-  <section class="hero">
-    <div class="hero-inner">
-      <span class="eyebrow">MUTUAL FUND DISTRIBUTOR • ARN 291823</span>
-      <h1>Explore Mutual Funds</h1>
-      <p>Search Indian mutual fund schemes, browse useful categories and view the latest available NAV with 1M, 6M and 1Y to 5Y trailing returns.</p>
-      <div class="data-status"><span class="status-dot"></span><span id="dataStatus">Loading the daily fund directory…</span></div>
-    </div>
-  </section>
-
   <main class="main">
     <section class="search-panel" aria-label="Search and filter mutual funds">
-      <div class="search-row">
-        <div class="search-field">
-          <label class="field-label" for="fundSearch">Search mutual funds</label>
-          <div class="search-box"><span aria-hidden="true">⌕</span><input id="fundSearch" type="search" placeholder="Search fund or fund house" autocomplete="off"></div>
-        </div>
-        <div>
-          <label class="field-label" for="amcFilter">Fund House (AMC)</label>
-          <button class="filter-trigger" id="amcFilter" type="button" aria-haspopup="dialog"><strong id="amcFilterText">All Fund Houses</strong><b aria-hidden="true">⌄</b></button>
-        </div>
-        <div>
-          <label class="field-label" for="planFilter">Plan</label>
-          <div class="toolbar"><select id="planFilter"><option value="all">All plans</option><option value="regular">Regular plans</option><option value="direct">Direct plans</option></select></div>
-        </div>
-        <div>
-          <label class="field-label" for="sortFilter">Sort by</label>
-          <div class="toolbar"><select id="sortFilter"><option value="name">Fund name A–Z</option><option value="amc">Fund house A–Z</option><option value="category">Category</option></select></div>
-        </div>
-      </div>
-      <div class="category-scroll" id="categoryChips" aria-label="Fund categories">
-        <button class="category-chip active" type="button" data-category="All">All funds</button>
-        <button class="category-chip" type="button" data-category="Equity">Equity</button>
+      <div class="filter-scroll" id="categoryChips" aria-label="Fund filters">
+        <button class="filter-icon-button" id="amcFilter" type="button" aria-haspopup="dialog" aria-label="Open fund filters"><span aria-hidden="true">☷</span><strong class="sr-only" id="amcFilterText">All Fund Houses</strong></button>
+        <label class="filter-select-chip" for="sortFilter"><span aria-hidden="true">☰</span><select id="sortFilter" aria-label="Sort funds"><option value="name">Sort by</option><option value="amc">Fund house A–Z</option><option value="category">Category</option></select></label>
+        <button class="category-chip active" type="button" data-category="All">All Funds</button>
+        <button class="category-chip" type="button" data-category="Index">Index only</button>
+        <button class="category-chip" type="button" data-category="Flexi Cap">Flexi Cap</button>
+        <button class="category-chip" type="button" data-category="Sectoral / Thematic">Sectoral</button>
         <button class="category-chip" type="button" data-category="Large Cap">Large Cap</button>
         <button class="category-chip" type="button" data-category="Mid Cap">Mid Cap</button>
         <button class="category-chip" type="button" data-category="Small Cap">Small Cap</button>
-        <button class="category-chip" type="button" data-category="Flexi Cap">Flexi Cap</button>
         <button class="category-chip" type="button" data-category="Debt">Debt</button>
         <button class="category-chip" type="button" data-category="Hybrid">Hybrid</button>
-        <button class="category-chip" type="button" data-category="Index">Index</button>
         <button class="category-chip" type="button" data-category="Gold & Silver">Gold & Silver</button>
-        <button class="category-chip" type="button" data-category="ELSS">Tax Saver</button>
+        <button class="filter-chip" id="openAmcDirectory" type="button" aria-haspopup="dialog">Fund House</button>
+        <label class="filter-select-chip" for="planFilter"><select id="planFilter" aria-label="Select plan type"><option value="all">All plans</option><option value="regular">Regular</option><option value="direct">Direct</option></select></label>
+        <label class="filter-chip growth-chip"><input id="growthOnly" type="checkbox"> Growth only</label>
       </div>
-    </section>
-
-    <section class="section" aria-labelledby="collectionsTitle">
-      <div class="section-head">
-        <div><h2 id="collectionsTitle">Fund collections</h2><p>Choose a category to narrow the fund directory.</p></div>
+      <div class="directory-search">
+        <label class="sr-only" for="fundSearch">Search mutual funds</label>
+        <div class="search-box"><span aria-hidden="true">⌕</span><input id="fundSearch" type="search" placeholder="Search mutual funds" autocomplete="off"></div>
       </div>
-      <div class="collections-grid" id="collectionCards">
-        <button class="collection-card" type="button" data-category="Large Cap"><span class="collection-icon">L</span><strong>Large Cap</strong></button>
-        <button class="collection-card" type="button" data-category="Mid Cap"><span class="collection-icon">M</span><strong>Mid Cap</strong></button>
-        <button class="collection-card" type="button" data-category="Small Cap"><span class="collection-icon">S</span><strong>Small Cap</strong></button>
-        <button class="collection-card" type="button" data-category="Flexi Cap"><span class="collection-icon">F</span><strong>Flexi Cap</strong></button>
-        <button class="collection-card" type="button" data-category="Index"><span class="collection-icon">↗</span><strong>Index Funds</strong></button>
-        <button class="collection-card" type="button" data-category="Gold & Silver"><span class="collection-icon">Au</span><strong>Gold & Silver</strong></button>
-      </div>
-    </section>
-
-    <section class="section" id="amcDirectory" aria-labelledby="amcTitle">
-      <div class="section-head">
-        <div><h2 id="amcTitle">Fund House (AMC)</h2><p>Choose one or more fund houses to view all available funds.</p></div>
-      </div>
-      <div class="amc-panel">
-        <div class="amc-panel-copy">
-          <strong id="selectedAmcCopy">All Fund Houses</strong>
-          <span class="amc-summary" id="amcSummary">Loading fund houses…</span>
-        </div>
-        <button class="choose-amc" id="openAmcDirectory" type="button" aria-haspopup="dialog">Choose Fund House</button>
-      </div>
+      <strong class="sr-only" id="selectedAmcCopy">All Fund Houses</strong>
+      <span class="sr-only" id="amcSummary">Loading fund houses…</span>
     </section>
 
     <section class="section" id="fundDirectory" aria-labelledby="directoryTitle">
-      <div class="section-head">
-        <div><h2 id="directoryTitle">All mutual fund schemes</h2><p>Open any scheme to view its latest available NAV and trailing returns.</p></div>
-        <div class="toolbar">
-          <label class="growth-toggle"><input id="growthOnly" type="checkbox"> Growth options only</label>
-        </div>
-      </div>
+      <h2 class="sr-only" id="directoryTitle">All Mutual Funds</h2>
 
       <div class="results-meta">
         <span id="resultCount"><strong>Loading</strong> funds…</span>
-        <label class="return-period" for="returnPeriod">Returns
+        <label class="return-period" for="returnPeriod"><span class="return-arrows" aria-hidden="true">‹ ›</span>
           <select id="returnPeriod" aria-label="Select return period">
-            <option value="1m">1M</option>
-            <option value="6m">6M</option>
-            <option value="1y">1Y</option>
-            <option value="2y">2Y</option>
-            <option value="3y" selected>3Y</option>
-            <option value="4y">4Y</option>
-            <option value="5y">5Y</option>
+            <option value="1m">1M Returns</option>
+            <option value="6m">6M Returns</option>
+            <option value="1y">1Y Returns</option>
+            <option value="2y">2Y Returns</option>
+            <option value="3y" selected>3Y Returns</option>
+            <option value="4y">4Y Returns</option>
+            <option value="5y">5Y Returns</option>
           </select>
         </label>
       </div>
@@ -374,11 +457,22 @@
     <section class="amc-filter-sheet">
       <header class="amc-filter-head">
         <button class="filter-close" type="button" data-close-amc-filter aria-label="Close fund house filter">×</button>
-        <h2 id="amcFilterTitle">Fund House</h2>
+        <h2 id="amcFilterTitle">Filters</h2>
         <button class="filter-clear" id="clearAmcFilter" type="button">Clear all</button>
       </header>
-      <label class="amc-choice-search" for="amcSearch"><span aria-hidden="true">⌕</span><input id="amcSearch" type="search" placeholder="Search fund house" autocomplete="off"></label>
-      <div class="amc-choice-list" id="amcChoiceList" aria-live="polite"></div>
+      <div class="filter-dialog-body">
+        <nav class="filter-side-nav" aria-label="Filter types">
+          <button type="button" data-filter-jump="sortFilter">Sort by</button>
+          <button type="button" data-filter-jump="categoryChips">Categories</button>
+          <button type="button" data-filter-jump="planFilter">Plan</button>
+          <button type="button" data-filter-jump="returnPeriod">Returns</button>
+          <button class="active" type="button" aria-current="page">Fund House</button>
+        </nav>
+        <div class="filter-dialog-main">
+          <label class="amc-choice-search" for="amcSearch"><span aria-hidden="true">⌕</span><input id="amcSearch" type="search" placeholder="Search fund house" autocomplete="off"></label>
+          <div class="amc-choice-list" id="amcChoiceList" aria-live="polite"></div>
+        </div>
+      </div>
       <footer class="amc-filter-footer"><button class="apply-amc-filter" id="applyAmcFilter" type="button">View all funds</button></footer>
     </section>
   </div>
@@ -614,6 +708,11 @@
       document.getElementById('amcSummary').textContent = state.selectedAmcs.size
         ? `${countForAmcs(state.selectedAmcs).toLocaleString('en-IN')} available schemes selected`
         : `${allGroups.length.toLocaleString('en-IN')} fund houses • ${state.schemes.length.toLocaleString('en-IN')} available schemes`;
+      const fundHouseButton = document.getElementById('openAmcDirectory');
+      if (fundHouseButton) {
+        fundHouseButton.textContent = state.selectedAmcs.size ? `Fund House (${state.selectedAmcs.size})` : 'Fund House';
+        fundHouseButton.classList.toggle('active', state.selectedAmcs.size > 0);
+      }
     }
 
     function updateAmcApplyText() {
@@ -767,7 +866,7 @@
         name.textContent = scheme.name;
         const meta = document.createElement('span');
         meta.className = 'fund-meta';
-        meta.textContent = `${scheme.amc.replace(/\s+Mutual Fund(?:\s+\(IDF\))?$/i, '')} • ${category} • ${plan}`;
+        meta.textContent = `${category} • ${plan}`;
         copy.append(name, meta);
 
         const returnBox = document.createElement('span');
@@ -1067,7 +1166,7 @@
     document.getElementById('sortFilter').addEventListener('change', () => applyFilters(true));
     document.getElementById('growthOnly').addEventListener('change', () => applyFilters(true));
     document.getElementById('amcFilter').addEventListener('click', openAmcFilter);
-    document.getElementById('openAmcDirectory').addEventListener('click', openAmcFilter);
+    document.getElementById('openAmcDirectory')?.addEventListener('click', openAmcFilter);
     document.getElementById('amcSearch').addEventListener('input', (event) => {
       state.amcQuery = event.target.value;
       renderAmcChoices();
@@ -1078,6 +1177,15 @@
     });
     document.getElementById('applyAmcFilter').addEventListener('click', applyAmcSelection);
     document.querySelectorAll('[data-close-amc-filter]').forEach((button) => button.addEventListener('click', closeAmcFilter));
+    document.querySelectorAll('[data-filter-jump]').forEach((button) => button.addEventListener('click', () => {
+      const targetId = button.dataset.filterJump;
+      closeAmcFilter();
+      if (targetId === 'categoryChips') {
+        document.querySelector('.category-chip')?.focus();
+        return;
+      }
+      document.getElementById(targetId)?.focus();
+    }));
     document.getElementById('returnPeriod').addEventListener('change', (event) => {
       state.returnPeriod = event.target.value;
       renderFunds();
