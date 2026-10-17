@@ -33,3 +33,17 @@ The app is in `client-manager/` so it can be deployed separately from the public
 - Do not share admin credentials or exported CSV files.
 - This version displays reminders inside the app while it is open; push notifications/background alerts are not included.
 - Database connection values are saved in browser local storage. Use a trusted device and sign out on shared devices.
+
+
+## Investment CRM (live cloud sync)
+
+A mobile-friendly investment tracker is available at `/client-manager/investments.html` on the main RNK website. It stores investment records in the Supabase table `public.rnk_investments` and subscribes to Supabase Realtime so updates appear on other signed-in devices.
+
+### One-time setup for investments
+1. In the SAME Supabase project used by Client Desk, open **SQL Editor**.
+2. Run `supabase/investments-schema.sql`. This expects `supabase/client-manager-schema.sql` to have already been run and the admin account to already be allowlisted in `public.rnk_admins`.
+3. Confirm the admin account exists under **Authentication → Users** and its UUID is listed in `public.rnk_admins`.
+4. On each phone/computer, open the Investment CRM page, choose **Configure Supabase**, and enter the same project URL and public publishable/anon key. Then sign in with the same admin email/password.
+5. Keep the key public publishable/anon only. Never paste a service-role/secret key into the app or chat.
+
+The investment CRM uses the same browser connection setting key as Client Desk, so the URL/key will be reused on a device where Client Desk is already configured. The records are in the cloud; local browser storage is used only for the connection settings and sign-in session.
