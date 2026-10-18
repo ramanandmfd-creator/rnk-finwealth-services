@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>RNK FINWEALTH — Private CRM</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#06385d;--gold:#f0b51b;--bg:#f3f7fb;--ink:#172b3c;--line:#dbe5ed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,sans-serif}.top{background:var(--navy);color:white;padding:20px 16px}.wrap{max-width:1000px;margin:auto;padding:18px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 5px 18px #0b31500a}h1{font-size:22px;margin:0}h2{font-size:19px;margin:0 0 12px}.muted{color:#607487;font-size:14px}label{display:block;font-size:14px;font-weight:650;margin:10px 0 5px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd8e2;border-radius:10px;font:inherit;background:white}button{border:0;border-radius:10px;padding:12px 16px;background:var(--navy);color:white;font-weight:700;font:inherit;cursor:pointer}button.gold{background:var(--gold);color:#142b3e}button.light{background:#eaf1f6;color:var(--navy)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.hidden{display:none!important}.status{padding:10px;border-radius:10px;background:#fff6dc;margin:10px 0}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:700px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:14px}th{background:#f3f7fa}.count{font-size:24px;font-weight:800;color:var(--navy)}@media(max-width:600px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.card{padding:14px}}
+</style></head>
+<body>
+<header class="top"><div class="wrap" style="padding:0 8px"><div class="muted" style="color:#c8dce9">PRIVATE • ADMIN ONLY</div><h1>RNK FINWEALTH SERVICES — Client CRM</h1><div class="muted" style="color:#c8dce9">यह निजी CRM है। ग्राहक रिकॉर्ड सार्वजनिक वेबसाइट पर नहीं दिखते।</div></div></header>
+<main class="wrap">
+<section id="setup" class="card"><h2>पहली बार सुरक्षित कनेक्शन सेट करें</h2><p class="muted">अपने Supabase project का URL और publishable/anon key डालें। ये आपके ब्राउज़र में ही सेव होंगे। कभी भी service_role या secret key न डालें।</p>
+<label>Supabase Project URL</label><input id="url" placeholder="https://your-project.supabase.co" autocomplete="url">
+<label>Publishable / anon key</label><textarea id="key" rows="3" placeholder="sb_publishable_... या पुरानी anon public key"></textarea>
+<div class="actions"><button id="saveConfig" class="gold">कनेक्शन सेव करें</button></div><p id="setupMsg" class="muted"></p></section>
+<section id="login" class="card hidden"><h2>Admin Login</h2><label>आपका ईमेल</label><input id="email" type="email" autocomplete="username" placeholder="Admin email"><label>पासवर्ड</label><input id="password" type="password" autocomplete="current-password" placeholder="Supabase password"><div class="actions"><button id="signIn" class="gold">लॉगिन करें</button></div><p id="loginMsg" class="muted"></p></section>
+<section id="app" class="hidden">
+<div class="card"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><h2>आपका Client Desk</h2><div class="muted">डेटा केवल लॉगिन किए हुए अधिकृत admin को दिखेगा।</div></div><button id="signOut" class="light">लॉगआउट</button></div><div class="count" id="total">0 ग्राहक</div></div>
+<section class="card"><h2 id="formTitle">नया ग्राहक जोड़ें</h2><form id="clientForm"><input type="hidden" id="clientId"><div class="grid">
+<div><label>ग्राहक का नाम *</label><input id="client_name" required maxlength="150"></div>
+<div><label>फोन नंबर *</label><input id="phone" required inputmode="tel" maxlength="30"></div>
+<div><label>रिकॉर्ड तारीख</label><input id="record_date" type="date"></div>
+<div><label>पता</label><input id="address" maxlength="250"></div>
+<div><label>संपर्क का स्रोत</label><input id="source" maxlength="100" placeholder="Referral / WhatsApp"></div>
+<div><label>अनुमानित निवेश राशि (₹)</label><input id="expected_amount" type="number" min="0" step="0.01"></div>
+<div><label>स्कीम का नाम</label><input id="scheme_name" maxlength="150"></div>
+<div><label>निवेश की तारीख</label><input id="investment_date" type="date"></div>
+<div><label>संभावित निवेश तारीख</label><input id="tentative_investment_date" type="date"></div>
+<div><label>फॉलो-अप स्थिति</label><select id="followup_status"><option>Pending</option><option>Interested</option><option>Invested</option><option>Not Interested</option></select></div>
+<div><label>अगली कॉल तारीख</label><input id="next_call_date" type="date"></div>
+<div><label>कॉल का समय</label><input id="call_time" type="time"></div>
+</div><label>कॉल नोट</label><input id="call_note" maxlength="500"><label>अन्य टिप्पणी</label><textarea id="remarks" rows="2" maxlength="1500"></textarea><div class="actions"><button type="submit" class="gold">रिकॉर्ड सेव करें</button><button type="button" id="resetForm" class="light">फॉर्म साफ करें</button></div><p id="formMsg" class="muted"></p></form></section>
+<section class="card"><h2>ग्राहक रिकॉर्ड</h2><label>नाम या फोन से खोजें</label><input id="search" placeholder="Search..."><div class="tablewrap"><table><thead><tr><th>नाम / फोन</th><th>राशि</th><th>अगली कॉल</th><th>स्थिति</th><th>कार्य</th></tr></thead><tbody id="rows"><tr><td colspan="5">लोड हो रहा है…</td></tr></tbody></table></div><div class="actions"><button id="refresh" class="light">रिफ्रेश</button></div><p id="listMsg" class="muted"></p></section>
+</section>
+<div class="muted" style="text-align:center;padding:16px">RNK FINWEALTH SERVICES • निजी उपयोग • कभी भी public website पर ग्राहक विवरण न डालें।</div>
+</main>
+<script>
+(()=> {
+const $=id=>document.getElementById(id);
+let client=null, currentUser=null, records=[];
+const fields=['client_name','phone','record_date','address','source','expected_amount','scheme_name','investment_date','tentative_investment_date','followup_status','next_call_date','call_time','call_note','remarks'];
+function msg(id,text){$(id).textContent=text||''}
+function show(id,on){$(id).classList.toggle('hidden',!on)}
+function config(){return {url:localStorage.getItem('rnk_crm_url')||'',key:localStorage.getItem('rnk_crm_key')||''}}
+function start(){
+const c=config();$('url').value=c.url;$('key').value=c.key;
+if(c.url&&c.key){try{client=window.supabase.createClient(c.url,c.key);show('setup',false);show('login',true);client.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;enterApp()}}).catch(e=>msg('loginMsg',e.message))}catch(e){show('setup',true);msg('setupMsg','URL/key जाँचें।')}}
+}
+$('saveConfig').onclick=()=>{const u=$('url').value.trim(),k=$('key').value.trim();if(!/^https:\/\/[\w.-]+\.supabase\.co$/.test(u)||!k){msg('setupMsg','कृपया सही Supabase URL और publishable/anon key भरें।');return}localStorage.setItem('rnk_crm_url',u);localStorage.setItem('rnk_crm_key',k);msg('setupMsg','सेटिंग सेव हो गई। कनेक्शन खोल रहे हैं…');start()};
+$('signIn').onclick=async()=>{msg('loginMsg','लॉगिन जाँच रहे हैं…');try{const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;currentUser=data.user;enterApp()}catch(e){msg('loginMsg','लॉगिन नहीं हुआ: '+e.message)}};
+async function enterApp(){show('login',false);show('app',true);await loadRecords()}
+$('signOut').onclick=async()=>{await client.auth.signOut();currentUser=null;show('app',false);show('login',true)};
+function reset(){ $('clientForm').reset();$('clientId').value='';$('followup_status').value='Pending';$('formTitle').textContent='नया ग्राहक जोड़ें';msg('formMsg','')}
+$('resetForm').onclick=reset;
+$('clientForm').onsubmit=async e=>{e.preventDefault();if(!client||!currentUser)return;const obj={};for(const f of fields){const v=$(f).value.trim();obj[f]=v===''?null:v}obj.client_name=$('client_name').value.trim();obj.phone=$('phone').value.trim();if(obj.expected_amount!==null)obj.expected_amount=Number(obj.expected_amount);msg('formMsg','सेव हो रहा है…');try{const id=$('clientId').value;const q=id?client.from('rnk_clients').update(obj).eq('id',id):client.from('rnk_clients').insert(obj);const {error}=await q;if(error)throw error;msg('formMsg','रिकॉर्ड सुरक्षित रूप से सेव हो गया।');reset();await loadRecords()}catch(e){msg('formMsg','सेव नहीं हुआ: '+e.message+' — Supabase table और admin permissions जाँचें।')}};
+async function loadRecords(){msg('listMsg','रिकॉर्ड लोड हो रहे हैं…');$('rows').innerHTML='<tr><td colspan="5">लोड हो रहा है…</td></tr>';try{const {data,error}=await client.from('rnk_clients').select('*').order('created_at',{ascending:false}).limit(1000);if(error)throw error;records=data||[];render();msg('listMsg','')}catch(e){$('rows').innerHTML='<tr><td colspan="5">रिकॉर्ड लोड नहीं हुए।</td></tr>';msg('listMsg','डेटाबेस/अनुमति की जाँच जरूरी है: '+e.message)}}
+function render(){const q=$('search').value.toLowerCase();const list=records.filter(r=>(r.client_name+' '+r.phone).toLowerCase().includes(q));$('total').textContent=records.length+' ग्राहक';$('rows').innerHTML=list.map(r=>'<tr><td><b>'+esc(r.client_name)+'</b><br>'+esc(r.phone)+'</td><td>'+(r.expected_amount==null?'—':'₹'+Number(r.expected_amount).toLocaleString('en-IN'))+'</td><td>'+esc(r.next_call_date||'—')+'</td><td>'+esc(r.followup_status||'Pending')+'</td><td><button class="light" data-edit="'+r.id+'">बदलें</button> <button data-delete="'+r.id+'" style="background:#9b2525">हटाएँ</button></td></tr>').join('')||'<tr><td colspan="5">कोई रिकॉर्ड नहीं मिला।</td></tr>'}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('rows').onclick=async e=>{const edit=e.target.dataset.edit,del=e.target.dataset.delete;if(edit){const r=records.find(x=>x.id===edit);if(!r)return;for(const f of fields)$(f).value=r[f]??'';$('clientId').value=r.id;$('formTitle').textContent='ग्राहक रिकॉर्ड बदलें';window.scrollTo({top:0,behavior:'smooth'})}if(del){if(!confirm('क्या आप यह ग्राहक रिकॉर्ड हटाना चाहते हैं?'))return;try{const {error}=await client.from('rnk_clients').delete().eq('id',del);if(error)throw error;await loadRecords()}catch(e){msg('listMsg','हटाया नहीं जा सका: '+e.message)}}};
+$('search').oninput=render;$('refresh').onclick=loadRecords;
+start();
+})();
+</script></body></html>
