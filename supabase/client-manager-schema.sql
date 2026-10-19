@@ -80,3 +80,10 @@ grant select, insert, update, delete on public.rnk_clients to authenticated;
 
 -- IMPORTANT: Disable public sign-ups in Supabase Authentication settings.
 -- Never put a service_role/secret key in this client-side app.
+
+
+-- Add sub-broker identity fields to existing client records (safe to run on an existing CRM).
+alter table public.rnk_clients
+  add column if not exists sub_broker_name text,
+  add column if not exists sub_broker_code text;
+
