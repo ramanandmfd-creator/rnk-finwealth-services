@@ -28,6 +28,58 @@ body{background:linear-gradient(180deg,#f5f9fc 0%,#eef4f8 100%);letter-spacing:-
 @media(max-width:600px){.top{padding:13px 12px;align-items:flex-start}.top .brand{gap:9px}.top-right{gap:6px;justify-content:flex-end}.top-right .btn{min-height:36px}.wrap{padding:17px 11px 30px}.welcome{gap:12px}.welcome h2{font-size:25px}.cards{gap:9px}.metric{padding:13px 12px}.metric .num{margin:8px 0 3px}.layout{gap:12px}.side{padding:6px;gap:3px}.nav{padding:10px 11px;font-size:12px}.panel{padding:14px}.panel-head{align-items:flex-start}.panel-head h3{font-size:18px}.tools{gap:7px}.tools .search{max-width:none!important}.loginbox{padding:23px;border-radius:20px}.reminder{padding:12px;gap:8px}.row-actions .btn{padding:7px 9px}.foot{padding-inline:8px}}
 @media(min-width:951px){.side{min-height:360px}.panel{min-height:440px}}
 
+/* Premium RNK wealth-dashboard finish */
+.top{position:relative;overflow:hidden}
+.top:after{content:"";position:absolute;right:-70px;top:-110px;width:300px;height:240px;border:1px solid #ffffff20;border-radius:50%;pointer-events:none}
+.top .brand,.top .top-right{position:relative;z-index:1}
+.top .brand h1{font-size:clamp(16px,1.7vw,21px);font-weight:850}
+.top .brand p{font-size:13px}
+.top-right .pill{background:#ffffff12;backdrop-filter:blur(8px)}
+.welcome{padding:2px 2px 0}
+.welcome h2{font-weight:850}
+.cards{gap:16px}
+.metric{background:linear-gradient(145deg,#fff 0%,#fbfdff 100%);min-height:142px}
+.metric:nth-child(1) .ico{background:#e6f3ff;color:#0876c9}
+.metric:nth-child(2) .ico{background:#def8ee;color:#05966c}
+.metric:nth-child(3) .ico{background:#fff0d2;color:#b77705}
+.side{background:linear-gradient(180deg,#063454 0%,#07577a 75%,#087b78 100%);border:0;box-shadow:0 16px 35px #073b5b22;padding:12px;overflow:hidden}
+.side .nav{color:#d9eaf4;border-radius:12px;padding:13px 12px}
+.side .nav:hover{background:#ffffff15;color:#fff}
+.side .nav.active{background:linear-gradient(100deg,#0789c9,#087b9d);color:white;box-shadow:0 7px 18px #001d3535,inset 0 0 0 1px #ffffff20}
+.side .nav span{font-size:18px}
+.side .side-note{color:#d1e5f1;border-color:#ffffff25;line-height:1.8}
+.panel{background:rgba(255,255,255,.97);box-shadow:0 15px 42px rgba(10,54,82,.065)}
+#addPage .panel-head{background:linear-gradient(105deg,#075db4,#0788ad);color:#fff;margin:-24px -24px 22px;padding:17px 24px;border-radius:17px 17px 0 0}
+#addPage .panel-head h3,#addPage .panel-head p{color:#fff}
+#addPage .panel-head p{opacity:.82}
+#addPage .panel-head .btn{background:#ffffff18;border-color:#ffffff50;color:#fff}
+#saveClientBtn{background:linear-gradient(110deg,#ffda68,#f0ad20);color:#173752;box-shadow:0 7px 18px #dca52b30}
+#clearFormBtn{background:#fff}
+.field input,.field select,.field textarea{min-height:45px}
+.field textarea{min-height:100px}
+#clientTable{box-shadow:0 5px 18px #143d5b08}
+#clientTable th{background:#073b5b;color:#fff;border-color:#ffffff18}
+#clientTable td{background:#fff}
+#clientTable tbody tr:hover td{background:#f0f8fc}
+#clientTable .btn.soft{background:#e7f4fb;color:#07577a}
+#clientTable .btn.danger{background:#fff0f0}
+.toast{background:linear-gradient(120deg,#073b5b,#087b9d)}
+@media(max-width:950px){
+ .side{background:linear-gradient(100deg,#063454,#07577a);border-radius:15px}
+ #addPage .panel-head{margin:-20px -20px 20px;padding:16px 20px;border-radius:17px 17px 0 0}
+}
+@media(max-width:600px){
+ .top{background:linear-gradient(115deg,#062b46,#07577a 72%,#087b78)}
+ .top .brand h1{font-size:14px;line-height:1.25}
+ .top .brand p{font-size:10px;max-width:190px}
+ .cards{gap:9px}
+ .metric{min-height:125px}
+ #addPage .panel-head{margin:-14px -14px 18px;padding:15px 14px;border-radius:12px 12px 0 0}
+ #addPage .panel-head .btn{font-size:11px}
+ .side{scrollbar-width:none}
+ .side::-webkit-scrollbar{display:none}
+}
+
 </style>
 </head>
 <body>
