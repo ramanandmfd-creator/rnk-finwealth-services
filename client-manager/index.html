@@ -90,7 +90,7 @@ body{background:linear-gradient(180deg,#f5f9fc 0%,#eef4f8 100%);letter-spacing:-
   <div id="setupNotice" class="notice hidden">First-time setup required. Enter your Supabase project URL and publishable/anon key below, then save the connection.</div>
   <form id="loginForm"><div class="field"><label for="email">Admin email</label><input id="email" type="email" autocomplete="username" required placeholder="admin@example.com"></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Your password"></div><button class="btn primary" style="width:100%;padding:13px" type="submit">Sign in securely →</button><div id="loginError" class="error"></div></form>
   <div class="foot">No public sign-up · Your data is protected by database access policies.</div>
-  <hr class="divider"><button id="openConfig" class="btn outline" style="width:100%">⚙ Configure database connection</button>
+  <hr class="divider"><button id="openConfig" class="btn outline" style="width:100%" onclick="document.getElementById('sbUrl').value=JSON.parse(localStorage.getItem('rnk_clientdesk_config_v1')||'{}').url||'https://ntwkkstlukpujxarxkgt.supabase.co';document.getElementById('sbKey').value=JSON.parse(localStorage.getItem('rnk_clientdesk_config_v1')||'{}').key||'';document.getElementById('loginView').classList.add('hidden');document.getElementById('configView').classList.remove('hidden')">⚙ Configure database connection</button>
  </section>
 </div>
 <div id="configView" class="loginpage hidden">
