@@ -47,3 +47,16 @@ A mobile-friendly investment tracker is available at `/client-manager/investment
 5. Keep the key public publishable/anon only. Never paste a service-role/secret key into the app or chat.
 
 The investment CRM uses the same browser connection setting key as Client Desk, so the URL/key will be reused on a device where Client Desk is already configured. The records are in the cloud; local browser storage is used only for the connection settings and sign-in session.
+
+
+## Insurance Customer CRM
+
+A separate admin-only insurance customer page is available at `/client-manager/insurance.html` and is linked from the Client Desk navigation. It records customer name, phone, email, address, RC and policy numbers, policy start/end dates, PAN/Aadhaar (only when needed), nominee name/DOB, insurance type, insurer, remarks, and shows policy expiry counts.
+
+### One-time database setup
+1. Open the SAME Supabase project used by Client Desk.
+2. Open **SQL Editor** and run `supabase/insurance-customers-schema.sql` from this repository.
+3. Make sure the admin user is listed in `public.rnk_admins` (existing CRM setup).
+4. Open `/client-manager/insurance.html`, sign in with the existing RNK Admin login, and save customer records. The page reuses the Supabase connection configured for Client Desk on that browser.
+
+The insurance table has Row Level Security and is restricted to the RNK Admin. PAN and Aadhaar are sensitive personal data: only collect them when required, keep access restricted, and avoid exporting/sharing the CSV unnecessarily. The code change does not run the SQL migration automatically; the table must be created in Supabase before saving records.
