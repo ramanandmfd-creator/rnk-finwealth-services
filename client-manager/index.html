@@ -149,9 +149,9 @@ body{background:linear-gradient(180deg,#f5f9fc 0%,#eef4f8 100%);letter-spacing:-
 const $=id=>document.getElementById(id);let sb=null,clients=[],activePage='dashboard',toastTimer,currentUser=null,isAdmin=false,brokerProfile=null,brokers=[];
 const fields=['client_name','phone','address','source','expected_amount','scheme_name','investment_date','followup_status','call_time','call_note','remarks'];
 const configKey='rnk_clientdesk_config_v1';
-function showFatalError(message){try{const box=document.getElementById('loginError');if(box){box.textContent='CRM error: '+String(message||'Unknown error');box.style.display='block';}const login=document.getElementById('loginView');if(login)login.classList.remove('hidden');const cfg=document.getElementById('configView');if(cfg)cfg.classList.add('hidden');const app=document.getElementById('appView');if(app)app.classList.add('hidden');}catch(_){}}
+function showFatalError(message){try{const msg=String(message||'Unknown error');const app=document.getElementById('appView');const login=document.getElementById('loginView');const box=document.getElementById('loginError');if(app&&!app.classList.contains('hidden')){const notice=document.getElementById('dashNotice');if(notice){notice.textContent='CRM warning: '+msg;notice.classList.remove('hidden');}if(typeof toast==='function')toast('CRM warning: '+msg);return;}if(box){box.textContent='CRM error: '+msg;box.style.display='block';}}catch(_){}}
 window.addEventListener('error',e=>showFatalError(e.message||'Page script failed to load'));
-window.addEventListener('unhandledrejection',e=>showFatalError(e.reason?.message||e.reason||'A background request failed'));
+window.addEventListener('unhandledrejection',e=>{showFatalError(e.reason?.message||e.reason||'A background request failed');});
 function cfg(){try{return JSON.parse(localStorage.getItem(configKey)||'{}')}catch{return {}}}
 function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),3200)}
 function show(view){['loginView','configView','appView'].forEach(x=>$(x).classList.toggle('hidden',x!==view))}
