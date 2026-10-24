@@ -83,6 +83,54 @@ body{background:linear-gradient(180deg,#f5f9fc 0%,#eef4f8 100%);letter-spacing:-
 
 
 .install-app{border:1px solid #ffffff65!important;background:#ffffff18!important;color:#fff!important;min-height:38px}.install-app:not(.hidden){display:inline-flex!important}@media(max-width:600px){.top-right .install-app,.actions .install-app{font-size:11px;padding:8px 9px;min-height:35px}}
+
+/* RNK FINWEALTH — larger type, clearer contrast, mobile-first polish */
+:root{--rnk-navy:#073b5b;--rnk-teal:#087e8b;--rnk-gold:#f0bd45;--rnk-ink:#17384b;--rnk-muted:#536b7b}
+html{font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-size:16px;line-height:1.55;color:var(--rnk-ink);letter-spacing:.005em}
+h1,h2,h3,h4{letter-spacing:-.025em;line-height:1.25}
+h1{font-size:clamp(19px,2.1vw,25px)}h2{font-size:clamp(23px,2.7vw,32px)}h3{font-size:clamp(18px,2vw,22px)}
+p,.muted,.hint,.label,.field label,.foot,.welcome p{font-size:14px;line-height:1.55}
+button,.btn,input,select,textarea{font:inherit}
+.btn,button{min-height:42px;font-weight:700;letter-spacing:.005em;border-radius:12px}
+input,select,textarea{font-size:16px!important;line-height:1.45}
+input::placeholder,textarea::placeholder{font-size:15px;opacity:.8}
+.field label{display:block;font-weight:700;color:#294b60;margin-bottom:6px}
+.top{background:linear-gradient(115deg,#052e49 0%,#075a77 56%,#07818b 100%);box-shadow:0 10px 30px #073b5b20}
+.mark{font-size:15px;font-weight:900;letter-spacing:-.04em;box-shadow:0 5px 14px #0002}
+.panel,.metric,.loginbox{box-shadow:0 12px 32px rgba(7,59,91,.075);border-color:#dce7ef}
+.panel{border-radius:18px}
+.metric{border-radius:17px;position:relative;overflow:hidden}
+.metric:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#087e8b,#f0bd45)}
+.metric .label{font-weight:600;color:#4b6577}
+.metric .num,.metric strong{font-size:clamp(25px,3vw,32px);font-weight:850;letter-spacing:-.045em;line-height:1.2;color:#073b5b}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #0b94b2;outline-offset:2px}
+.btn.primary,.btn.gold{box-shadow:0 5px 14px #073b5b18}
+@media(max-width:700px){
+ body{font-size:16px}
+ .top{gap:12px}
+ .panel{padding:17px;border-radius:16px}
+ .metric{padding:15px;min-height:100px}
+ .metric .label,.label{font-size:13px}
+ .metric .num,.metric strong{font-size:27px}
+ .field label{font-size:14px}
+ .btn,button{min-height:44px}
+ .hint,.muted{font-size:13px}
+}
+@media(max-width:420px){
+ .panel{padding:14px}
+ .metric{padding:12px;min-height:94px}
+ .metric .num,.metric strong{font-size:24px}
+ .brand h1{font-size:14px}
+ .brand p{font-size:11px}
+}
+
+/* Client desk readability */
+.nav button,.nav a,.sidebar a,.sidebar button{font-size:15px;font-weight:700}
+table{font-size:14px}th{font-size:13px;font-weight:800}td{line-height:1.5}
+.status,.pill{font-size:13px;font-weight:750}
+@media(max-width:700px){.nav button,.nav a,.sidebar a,.sidebar button{font-size:14px}}
+
 </style>
 </head>
 <body>
