@@ -47,11 +47,30 @@ function draw(){
  rr(190,139,365,36,18,gold);text('SUB-DISTRIBUTOR',372,165,24,'#071f42','900','center');
  rr(212,178,325,35,18,navy);text('ARN CODE : 291823',374,203,23,'#fff','900','center');
  text('Your Financial',866,56,29,navy,'italic 600','right');text('Growth Partner',866,91,29,navy,'italic 600','right');ctx.strokeStyle=gold;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(675,113);ctx.quadraticCurveTo(770,129,851,102);ctx.stroke();
- // hero area: keep original headline hierarchy; no family photograph
+ // hero area: original-style warm family illustration, with no bottom profile circle
  const sun=ctx.createRadialGradient(690,315,10,690,315,330);sun.addColorStop(0,'#ffe9ad');sun.addColorStop(1,'#fffdf6');ctx.fillStyle=sun;ctx.fillRect(0,220,900,490);
- ctx.fillStyle='#d8edc9';ctx.beginPath();ctx.moveTo(0,520);ctx.quadraticCurveTo(160,440,330,535);ctx.quadraticCurveTo(560,600,900,465);ctx.lineTo(900,720);ctx.lineTo(0,720);ctx.fill();
- ctx.fillStyle='#b5dcae';ctx.beginPath();ctx.moveTo(0,590);ctx.quadraticCurveTo(180,510,380,620);ctx.quadraticCurveTo(650,680,900,555);ctx.lineTo(900,720);ctx.lineTo(0,720);ctx.fill();
+ ctx.fillStyle='#c9e5b8';ctx.beginPath();ctx.moveTo(0,520);ctx.quadraticCurveTo(160,440,330,535);ctx.quadraticCurveTo(560,600,900,465);ctx.lineTo(900,720);ctx.lineTo(0,720);ctx.fill();
+ // soft garden trees
+ for(let k=0;k<8;k++){ctx.fillStyle=k%2?'#6da85b':'#8dbb62';ctx.beginPath();ctx.arc(520+k*48,320+(k%3)*35,45+(k%2)*10,0,Math.PI*2);ctx.fill()}
+ // family shoulders and clothes
+ ctx.fillStyle='#6ca8dc';ctx.beginPath();ctx.ellipse(700,615,105,130,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(600,615,200,100);
+ ctx.fillStyle='#f19b83';ctx.beginPath();ctx.ellipse(805,625,95,122,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(715,625,175,90);
+ ctx.fillStyle='#fff1d7';ctx.beginPath();ctx.ellipse(755,668,65,68,0,Math.PI,Math.PI*2);ctx.fill();
+ // adult heads
+ ctx.fillStyle='#9b5c38';ctx.beginPath();ctx.ellipse(687,415,66,77,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#f2bd91';ctx.beginPath();ctx.ellipse(687,429,56,65,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#38251d';ctx.beginPath();ctx.ellipse(686,381,66,37,-.1,Math.PI,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#9b5c38';ctx.beginPath();ctx.ellipse(801,437,57,69,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#f2bd91';ctx.beginPath();ctx.ellipse(801,445,48,57,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#39251f';ctx.beginPath();ctx.ellipse(800,405,59,36,-.2,Math.PI,Math.PI*2);ctx.fill();
+ // child looking upward
+ ctx.fillStyle='#f1bd91';ctx.beginPath();ctx.ellipse(740,548,43,49,-.15,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#38251d';ctx.beginPath();ctx.ellipse(738,516,42,24,0,Math.PI,Math.PI*2);ctx.fill();
+ // friendly eyes and smiles
+ ctx.fillStyle='#252b35';[[671,427],[700,427],[786,444],[811,444],[727,546],[749,546]].forEach(p=>{ctx.beginPath();ctx.arc(p[0],p[1],3.5,0,Math.PI*2);ctx.fill()});
+ ctx.strokeStyle='#8e3e32';ctx.lineWidth=3;[[675,446,699,446],[789,462,812,462],[727,562,750,562]].forEach(p=>{ctx.beginPath();ctx.arc((p[0]+p[2])/2,p[1],10,0,Math.PI);ctx.stroke()});
  text('आज की',46,292,54,navy,'900');text('छोटी',46,363,65,navy,'900');text('SIP',225,363,94,gold,'900');text('आपके कल का',46,421,40,navy,'900');text('बड़ा सपना',46,482,54,gold,'900');text('पूरा कर सकती है',46,531,35,navy,'900');
+ text('We Help You',846,628,26,green,'700','right');text('Invest, Protect',846,661,29,green,'900','right');text('and Grow',846,692,27,green,'900','right');
  // growth arrow and rising coins
  ctx.strokeStyle='#fff';ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(38,690);ctx.quadraticCurveTo(225,666,438,555);ctx.lineTo(413,563);ctx.moveTo(438,555);ctx.lineTo(430,582);ctx.stroke();
  for(let i=0;i<5;i++){let x=38+i*91,h=40+i*23,y=718-h;for(let j=0;j<5;j++){rr(x,y+j*8,68,8,3,j%2?'#d89d23':'#f4cc59','#bd861a')}ctx.fillStyle='#17975b';ctx.beginPath();ctx.ellipse(x+32,y-8,8,15,-.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(x+43,y-14,7,12,.6,0,Math.PI*2);ctx.fill()}
@@ -63,11 +82,11 @@ function draw(){
  perks.forEach((p,i)=>{let x=112+i*225;text(p[0],x,1206,38,gold,'900','center');text(p[1],x,1240,20,'#fff','800','center');text(p[2],x,1265,20,'#fff','800','center');if(i<3){ctx.strokeStyle='#7893aa';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(225+i*225,1180);ctx.lineTo(225+i*225,1270);ctx.stroke()}});
  // contact banner and editable sub-distributor details
  rr(18,1304,864,202,28,'#fff','#d7edf4');
- ctx.beginPath();ctx.arc(103,1403,70,0,Math.PI*2);ctx.fillStyle='#fff7d8';ctx.fill();ctx.strokeStyle=gold;ctx.lineWidth=5;ctx.stroke();text('RNK',103,1415,40,navy,'900','center');
+ // bottom-left profile circle/logo removed as requested
  const name=val('person')||'Your Name',phone=val('phone')||'Your Phone Number',wa=val('wa')||'Your WhatsApp Number';
- text(name.length>22?name.slice(0,21)+'…':name,190,1364,31,navy,'900');
- text('RNK FINWEALTH SERVICES',190,1396,20,navy,'800');text('SUB-DISTRIBUTOR',190,1425,19,green,'800');
- rr(190,1438,275,38,19,gold);text('ARN CODE : 291823',327,1464,22,navy,'900','center');
+ text(name.length>28?name.slice(0,27)+'…':name,48,1364,31,navy,'900');
+ text('RNK FINWEALTH SERVICES',48,1396,20,navy,'800');text('SUB-DISTRIBUTOR',48,1425,19,green,'800');
+ rr(48,1438,275,38,19,gold);text('ARN CODE : 291823',185,1464,22,navy,'900','center');
  rr(490,1327,368,145,22,green);text('Call / WhatsApp',674,1362,24,'#fff','900','center');
  text(phone.length>24?phone.slice(0,23)+'…':phone,674,1400,23,'#fff','800','center');
  text('WhatsApp: '+(wa.length>25?wa.slice(0,24)+'…':wa),674,1432,19,'#fff','700','center');text('For Financial Planning',674,1459,17,'#fff','700','center');
