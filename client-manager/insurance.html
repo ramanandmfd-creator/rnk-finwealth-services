@@ -64,6 +64,38 @@ th{font-size:13px}td{font-size:14px;line-height:1.55}
 .empty{font-size:15px;padding:20px}
 @media(max-width:700px){.reminder{gap:12px}.reminder h4{font-size:16px}.reminder p{font-size:13px}}
 
+
+/* Larger, easy-to-read insurance mobile typography — user requested */
+html{font-size:18px!important;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-size:18px!important;line-height:1.6!important}
+p,.muted,.hint,.metric small,.reminder p,.foot{font-size:15px!important;line-height:1.6!important}
+h1{font-size:clamp(19px,3vw,25px)!important}h2{font-size:clamp(25px,4vw,32px)!important}h3,.panel h3{font-size:22px!important}
+.field label{font-size:16px!important;font-weight:800!important;color:#23485e!important}
+.field input,.field select,.field textarea,.search,input,select,textarea{font-size:18px!important;min-height:54px!important;padding:13px 14px!important;border-radius:12px!important}
+.field textarea{min-height:120px!important}
+input::placeholder,textarea::placeholder{font-size:16px!important}
+.btn,button{font-size:16px!important;min-height:50px!important;padding:12px 15px!important}
+.metric strong{font-size:30px!important}.metric small{font-size:15px!important}
+.panel{padding:22px!important}
+.reminder h4{font-size:18px!important}.status{font-size:14px!important}
+@media(max-width:760px){
+ .wrap{padding:18px 12px 34px!important}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .metric{padding:16px!important;min-height:112px!important}
+ .metric strong{font-size:29px!important}
+ .formgrid{grid-template-columns:minmax(0,1fr)!important;gap:15px!important}
+ .panel{padding:18px!important}
+ .top{padding:15px!important;align-items:flex-start!important;gap:12px!important}
+ .actions{gap:8px!important}
+ .actions .btn{font-size:14px!important;min-height:44px!important;padding:10px 12px!important}
+ .field label{font-size:16px!important}
+ .field input,.field select,.field textarea,.search{font-size:18px!important;min-height:56px!important}
+ .btn,button{font-size:16px!important;min-height:50px!important}
+ .reminder{align-items:flex-start!important;flex-wrap:wrap!important;padding:16px!important}
+ .reminder h4{font-size:18px!important}
+}
+@media(max-width:390px){.stats{grid-template-columns:1fr 1fr!important}.metric strong{font-size:26px!important}.brand h1{font-size:14px!important}.brand p{font-size:12px!important}}
+
 </style></head><body>
 <div id="loginView" class="loginpage"><section class="loginbox"><div class="brand"><div class="mark">RNK</div><div><h1>RNK FINWEALTH SERVICES</h1><p>Insurance Customer CRM · Admin access only</p></div></div><h2>Admin Sign In</h2><p>Use your existing RNK CRM admin account. Insurance customer records are private.</p><form id="loginForm"><div class="field"><label for="email">Admin email</label><input id="email" type="email" required autocomplete="username"></div><div class="field"><label for="password">Password</label><input id="password" type="password" required autocomplete="current-password"></div><button class="btn primary" type="submit">Sign in securely</button><div id="loginError" class="error"></div></form><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><button id="openConfig" class="btn outline">⚙ Configure database connection</button><p>Use the same Supabase URL and public publishable/anon key as RNK CRM. Never use a service-role/secret key.</p></section></div>
 <div id="configView" class="loginpage hidden"><section class="loginbox"><h2>Connect Supabase</h2><p>Enter the same connection used by your RNK CRM.</p><form id="configForm"><div class="field"><label>Project URL</label><input id="sbUrl" type="url" required></div><div class="field"><label>Public publishable / anon key</label><input id="sbKey" type="password" required autocomplete="off"></div><button class="btn primary" type="submit">Save connection</button><button class="btn soft" id="cancelConfig" type="button" style="margin-top:8px">Back to login</button><div id="configError" class="error"></div></form></section></div>
