@@ -1,0 +1,21 @@
+{
+  "id": "/client-manager/index.html",
+  "name": "RNK FINWEALTH Client Desk",
+  "short_name": "RNK Client Desk",
+  "description": "Private client management and investment follow-up for RNK FINWEALTH SERVICES.",
+  "lang": "en-IN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f3f7fb",
+  "theme_color": "#073b5b",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
