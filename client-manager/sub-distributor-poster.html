@@ -33,50 +33,45 @@ small{display:block;color:#64798a;font-size:12px;margin-top:5px}.actions{display
 <script>
 const canvas=document.getElementById('poster'),ctx=canvas.getContext('2d');
 const val=id=>document.getElementById(id).value.trim();
-const navy='#062f63',blue='#0b4d83',gold='#f4c42f',green='#07874b',ink='#102f61';
+const navy='#062f63',gold='#f4c42f',green='#07874b',ink='#102f61';
 function rr(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=3;ctx.stroke()}}
 function text(t,x,y,size,color,weight='700',align='left',font='Arial'){ctx.fillStyle=color;ctx.font=weight+' '+size+'px '+font;ctx.textAlign=align;ctx.textBaseline='alphabetic';ctx.fillText(t,x,y)}
 function draw(){
- const bg=ctx.createLinearGradient(0,0,0,1600);bg.addColorStop(0,'#f4faff');bg.addColorStop(.55,'#ffffff');bg.addColorStop(1,'#e5f5fb');ctx.fillStyle=bg;ctx.fillRect(0,0,900,1600);
- // original-style RNK header, clean and photo-free
- ctx.fillStyle='#ffffff';ctx.fillRect(0,0,900,220);
- ctx.strokeStyle=gold;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(28,199);ctx.lineTo(870,199);ctx.stroke();
- ctx.beginPath();ctx.arc(103,91,70,0,Math.PI*2);ctx.strokeStyle=navy;ctx.lineWidth=9;ctx.stroke();
- ctx.fillStyle=gold;ctx.beginPath();ctx.moveTo(56,119);ctx.lineTo(56,88);ctx.lineTo(78,88);ctx.lineTo(78,119);ctx.fill();ctx.fillRect(86,69,17,50);ctx.fillRect(111,48,17,71);
- ctx.strokeStyle=gold;ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(47,82);ctx.lineTo(77,62);ctx.lineTo(94,70);ctx.lineTo(143,32);ctx.stroke();
+ const bg=ctx.createLinearGradient(0,0,0,1600);bg.addColorStop(0,'#f4faff');bg.addColorStop(.6,'#ffffff');bg.addColorStop(1,'#e8f7fb');ctx.fillStyle=bg;ctx.fillRect(0,0,900,1600);
+ // branded header like the supplied reference
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,900,220);
+ ctx.beginPath();ctx.arc(104,91,69,0,Math.PI*2);ctx.strokeStyle=navy;ctx.lineWidth=10;ctx.stroke();
+ ctx.fillStyle=gold;[[55,91,19,39],[81,72,19,58],[107,49,19,81]].forEach(v=>ctx.fillRect(...v));
+ ctx.strokeStyle=gold;ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(48,77);ctx.lineTo(77,55);ctx.lineTo(96,63);ctx.lineTo(145,25);ctx.stroke();ctx.beginPath();ctx.moveTo(126,26);ctx.lineTo(146,24);ctx.lineTo(140,45);ctx.stroke();
  text('RNK',190,83,76,navy,'900');text('FINWEALTH SERVICES',193,124,34,navy,'900');
  rr(190,139,365,36,18,gold);text('SUB-DISTRIBUTOR',372,165,24,'#071f42','900','center');
- rr(212,178,325,35,18,navy);text('ARN CODE : 291823',374,203,23,'#ffffff','900','center');
+ rr(212,178,325,35,18,navy);text('ARN CODE : 291823',374,203,23,'#fff','900','center');
  text('Your Financial',866,56,29,navy,'italic 600','right');text('Growth Partner',866,91,29,navy,'italic 600','right');ctx.strokeStyle=gold;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(675,113);ctx.quadraticCurveTo(770,129,851,102);ctx.stroke();
- // headline and abstract sunrise/greenery, no people/photo
- const sun=ctx.createRadialGradient(650,305,20,650,305,300);sun.addColorStop(0,'#ffe7a0');sun.addColorStop(1,'#fff');ctx.fillStyle=sun;ctx.fillRect(0,220,900,430);
- ctx.fillStyle='#dff1dc';ctx.beginPath();ctx.moveTo(0,535);ctx.quadraticCurveTo(180,440,340,545);ctx.quadraticCurveTo(560,610,900,480);ctx.lineTo(900,690);ctx.lineTo(0,690);ctx.fill();
- text('आज की',44,292,49,navy,'900');text('छोटी',44,359,62,navy,'900');text('SIP',224,360,91,gold,'900');text('आपके कल का',44,414,39,navy,'900');text('बड़ा सपना',44,473,53,gold,'900');text('पूरा कर सकती है',44,520,34,navy,'900');
- text('We Help You',846,444,26,green,'700','right');text('Invest, Protect',846,480,34,green,'900','right');text('and Grow',846,516,31,green,'900','right');
- // upward growth line and coin stacks
- ctx.strokeStyle='#ffffff';ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(42,675);ctx.quadraticCurveTo(235,655,430,560);ctx.lineTo(411,566);ctx.moveTo(430,560);ctx.lineTo(423,582);ctx.stroke();
- for(let i=0;i<5;i++){let x=38+i*91,h=42+i*21,y=724-h;for(let j=0;j<5;j++){rr(x,y+j*9,68,8,3,j%2?'#d89d23':'#f4cc59','#bd861a')}ctx.fillStyle='#15975a';ctx.beginPath();ctx.ellipse(x+32,y-8,8,15,-.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(x+43,y-14,7,12,.6,0,Math.PI*2);ctx.fill()}
- rr(0,744,900,56,0,'#ffffff');rr(277,750,346,43,22,navy);text('OUR SERVICES',450,781,29,'#ffffff','900','center');
- const services=[['↗','Mutual Funds','SIP | Lumpsum','Goal Planning','#d9f4ff','#1595d1'],['♥','Health Insurance','Family Health','Protection','#fff0f1','#ed3448'],['♟','Life Insurance','Secure','Your Family','#f5edff','#7023b5'],['▣','Vehicle Insurance','Car | Two Wheeler','Commercial','#e6fbf0','#087d52'],['✈','Travel Insurance','Travel Worry Free','Peace of Mind','#eaf7ff','#1478d4'],['⌂','Home Insurance','Protect','Your Home','#edfff2','#12844d']];
- services.forEach((s,i)=>{let col=i%3,row=Math.floor(i/3),x=24+col*290,y=812+row*169;rr(x,y,270,153,23,s[4],s[5]);text(s[0],x+135,y+51,40,s[5],'900','center');text(s[1],x+135,y+83,20,navy,'900','center');text(s[2],x+135,y+111,18,'#34495b','600','center');text(s[3],x+135,y+136,18,'#34495b','600','center')});
- // navy benefits strip
- rr(0,1160,900,128,24,navy);const perks=[['◎','Financial Goal','Planning'],['●','Personalized','Advice'],['◔','Wide Range','of Options'],['🤝','Long Term','Relationship']];
- perks.forEach((p,i)=>{let x=112+i*225;text(p[0],x,1206,37,gold,'900','center');text(p[1],x,1240,20,'#ffffff','800','center');text(p[2],x,1265,20,'#ffffff','800','center');if(i<3){ctx.strokeStyle='#7893aa';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(225+i*225,1180);ctx.lineTo(225+i*225,1270);ctx.stroke()}});
- // editable contact block, same bottom-band visual as reference
- rr(20,1310,860,198,27,'#ffffff','#d8edf5');
- ctx.beginPath();ctx.arc(104,1407,70,0,Math.PI*2);ctx.fillStyle='#fff5ce';ctx.fill();ctx.strokeStyle=gold;ctx.lineWidth=5;ctx.stroke();
- text('RNK',104,1418,39,navy,'900','center');
- const name=val('person')||'Your Name',phone=val('phone')||'Add Phone Number',wa=val('wa')||'Add WhatsApp Number';
- text(name.length>22?name.slice(0,21)+'…':name,195,1369,32,navy,'900');
- text('RNK FINWEALTH SERVICES',195,1401,20,navy,'800');
- text('SUB-DISTRIBUTOR',195,1430,19,green,'800');
- rr(190,1441,275,38,19,gold);text('ARN CODE : 291823',327,1467,22,navy,'900','center');
- rr(492,1330,365,142,22,green);text('Call / WhatsApp',674,1365,24,'#ffffff','900','center');
- text(phone.length>22?phone.slice(0,21)+'…':phone,674,1403,23,'#ffffff','800','center');
- text('WhatsApp: '+(wa.length>24?wa.slice(0,23)+'…':wa),674,1435,19,'#ffffff','700','center');
- text('For Financial Planning',674,1460,17,'#ffffff','700','center');
- text('Mutual fund investments are subject to market risks. Read all scheme-related documents carefully.',450,1545,16,'#27455a','600','center');
- text('Insurance is subject to policy terms and conditions.',450,1572,16,'#27455a','600','center');
+ // hero area: keep original headline hierarchy; no family photograph
+ const sun=ctx.createRadialGradient(690,315,10,690,315,330);sun.addColorStop(0,'#ffe9ad');sun.addColorStop(1,'#fffdf6');ctx.fillStyle=sun;ctx.fillRect(0,220,900,490);
+ ctx.fillStyle='#d8edc9';ctx.beginPath();ctx.moveTo(0,520);ctx.quadraticCurveTo(160,440,330,535);ctx.quadraticCurveTo(560,600,900,465);ctx.lineTo(900,720);ctx.lineTo(0,720);ctx.fill();
+ ctx.fillStyle='#b5dcae';ctx.beginPath();ctx.moveTo(0,590);ctx.quadraticCurveTo(180,510,380,620);ctx.quadraticCurveTo(650,680,900,555);ctx.lineTo(900,720);ctx.lineTo(0,720);ctx.fill();
+ text('आज की',46,292,54,navy,'900');text('छोटी',46,363,65,navy,'900');text('SIP',225,363,94,gold,'900');text('आपके कल का',46,421,40,navy,'900');text('बड़ा सपना',46,482,54,gold,'900');text('पूरा कर सकती है',46,531,35,navy,'900');
+ // growth arrow and rising coins
+ ctx.strokeStyle='#fff';ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(38,690);ctx.quadraticCurveTo(225,666,438,555);ctx.lineTo(413,563);ctx.moveTo(438,555);ctx.lineTo(430,582);ctx.stroke();
+ for(let i=0;i<5;i++){let x=38+i*91,h=40+i*23,y=718-h;for(let j=0;j<5;j++){rr(x,y+j*8,68,8,3,j%2?'#d89d23':'#f4cc59','#bd861a')}ctx.fillStyle='#17975b';ctx.beginPath();ctx.ellipse(x+32,y-8,8,15,-.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(x+43,y-14,7,12,.6,0,Math.PI*2);ctx.fill()}
+ rr(0,735,900,59,0,'#fff');rr(276,745,348,43,22,navy);text('OUR SERVICES',450,777,30,'#fff','900','center');
+ const services=[['↗','Mutual Funds','SIP | Lumpsum','Goal Planning','#e8faff','#079bd0'],['♥','Health Insurance','Family Health','Protection','#fff0f1','#ed3448'],['♟','Life Insurance','Secure','Your Family','#f6edff','#7023b5'],['▣','Vehicle Insurance','Car | Two Wheeler','Commercial','#e8fff2','#087d52'],['✈','Travel Insurance','Travel Worry Free','Peace of Mind','#eaf7ff','#1478d4'],['⌂','Home Insurance','Protect','Your Home','#edfff2','#12844d']];
+ services.forEach((s,i)=>{let col=i%3,row=Math.floor(i/3),x=24+col*290,y=806+row*170;rr(x,y,270,154,22,s[4],s[5]);text(s[0],x+135,y+53,42,s[5],'900','center');text(s[1],x+135,y+87,21,navy,'900','center');text(s[2],x+135,y+116,18,'#34495b','600','center');text(s[3],x+135,y+140,18,'#34495b','600','center')});
+ // dark blue benefit strip
+ rr(0,1160,900,125,25,navy);const perks=[['◎','Financial Goal','Planning'],['●','Personalized','Advice'],['◔','Wide Range','of Options'],['🤝','Long Term','Relationship']];
+ perks.forEach((p,i)=>{let x=112+i*225;text(p[0],x,1206,38,gold,'900','center');text(p[1],x,1240,20,'#fff','800','center');text(p[2],x,1265,20,'#fff','800','center');if(i<3){ctx.strokeStyle='#7893aa';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(225+i*225,1180);ctx.lineTo(225+i*225,1270);ctx.stroke()}});
+ // contact banner and editable sub-distributor details
+ rr(18,1304,864,202,28,'#fff','#d7edf4');
+ ctx.beginPath();ctx.arc(103,1403,70,0,Math.PI*2);ctx.fillStyle='#fff7d8';ctx.fill();ctx.strokeStyle=gold;ctx.lineWidth=5;ctx.stroke();text('RNK',103,1415,40,navy,'900','center');
+ const name=val('person')||'Your Name',phone=val('phone')||'Your Phone Number',wa=val('wa')||'Your WhatsApp Number';
+ text(name.length>22?name.slice(0,21)+'…':name,190,1364,31,navy,'900');
+ text('RNK FINWEALTH SERVICES',190,1396,20,navy,'800');text('SUB-DISTRIBUTOR',190,1425,19,green,'800');
+ rr(190,1438,275,38,19,gold);text('ARN CODE : 291823',327,1464,22,navy,'900','center');
+ rr(490,1327,368,145,22,green);text('Call / WhatsApp',674,1362,24,'#fff','900','center');
+ text(phone.length>24?phone.slice(0,23)+'…':phone,674,1400,23,'#fff','800','center');
+ text('WhatsApp: '+(wa.length>25?wa.slice(0,24)+'…':wa),674,1432,19,'#fff','700','center');text('For Financial Planning',674,1459,17,'#fff','700','center');
+ text('Mutual fund investments are subject to market risks. Read all scheme-related documents carefully.',450,1543,15,'#27455a','600','center');text('Insurance is subject to policy terms and conditions.',450,1570,15,'#27455a','600','center');
 }
 ['person','phone','wa'].forEach(id=>document.getElementById(id).addEventListener('input',draw));
 document.getElementById('download').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(!blob){alert('Download nahi ho paya. Dobara try karein.');return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);const name=(val('person')||'sub-distributor').trim().replace(/[^a-z0-9_-]+/gi,'-');a.download='RNK-Status-'+name+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)},'image/png')});
